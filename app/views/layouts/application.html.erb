@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Agency</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <div>
+
+      <a><%= link_to 'Sign In', new_user_session_path %></a>
+
+      <% if user_signed_in? %>
+
+      <a> <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></a>
+
+      <% else %>
+      <% end %>
+    </div>
+
+
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+
+
+    <%= yield %>
+  </body>
+</html>
