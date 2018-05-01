@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'map/index'
+  get 'map/show'
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
