@@ -1,3 +1,57 @@
-// Place all the styles related to the home controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// all the styles related to the home controller here.
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h3 {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0 auto;
+}
+
+.welcome {
+  margin: 5px auto;
+}
+
+.nav-list {
+  list-style-type: none;
+}
+
+.nav-list li {
+  display: inline;
+  margin: 0 5px;
+}
+
+.nav-list li a {
+  text-decoration: none;
+}
+
+.yield-content {
+  align-self: center;
+  width: 65%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  margin-top: auto;
+  padding: 40px 0;
+  align-self: center;
+  text-align: center;
+}
+
+.footer-list {
+  list-style-type: none;
+}
+
+.footer-list li {
+  display: inline;
+  margin: 0 5px;
+}
+
+.footer-list li a {
+  text-decoration: none;
+}
