@@ -1,6 +1,7 @@
 class MapController < ApplicationController
   def index
-    @response = azavea_api_response
+    @nei_response = azavea_api_response
+
   end
 
   def show
