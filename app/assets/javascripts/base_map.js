@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 var vectorSource = new ol.source.Vector({
   url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
   format: new ol.format.GeoJSON()
@@ -24,3 +25,6 @@ var map = new ol.Map({
 
 var geojsonObject = <%= @response.html_safe %>;
 console.log(geojsonObject);
+=======
+
+>>>>>>> Testing
