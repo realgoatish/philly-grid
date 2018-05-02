@@ -1,16 +1,19 @@
-# module Agency
-#   class Application < Rails::Application
+ require 'rack'
+require 'rack/cors'
 
-#     # ...
+ module Agency
+   class Application < Rails::Application
+
+     # ...
     
-#     # Rails 5
+     # Rails 5
 
-#     config.middleware.insert_before 0, Rack::Cors do
-#       allow do
-#         origins '*'
-#         resource '*', :headers => :any, :methods => [:get, :post, :options]
-#       end
-#     end
+    config.middleware.insert_before 0, Rack::Cors do
+       allow do
+         origins '*'
+   resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :options]
+       end
+     end
 
 
 require_relative 'boot'
@@ -30,5 +33,5 @@ Bundler.require(*Rails.groups)
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-#   end
-# end
+  end
+end
