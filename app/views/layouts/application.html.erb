@@ -1,32 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Agency</title>
+    <title>Philly Grid</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:300" rel="stylesheet">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <div>
 
-      <a><%= link_to 'Sign In', new_user_session_path %></a>
+    <header>
+      <nav>
+        <ul class="nav-list">
+          <li><a><%= link_to 'Home', root_path %></a></li>
+          <li><a href="#"> Mission </a></li>
+          <li><a href="#"> Contact </a></li>
+          <li><a><%= link_to 'Sign In', new_user_session_path %></a></li>
+            <% if user_signed_in? %>
+              <li><a><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></a></li>
+            <% else %>
+            <% end %>
+          <li><a><%= link_to 'Map', map_index_path %></a></li>
+        </ul>
+      </nav>
+    </header>
 
-      <% if user_signed_in? %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
 
-      <a> <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></a>
-
-      <% else %>
-      <% end %>
+    <div class="yield-content">
+      <%= yield %>
     </div>
 
-
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-
-
-    <%= yield %>
   </body>
 </html>
