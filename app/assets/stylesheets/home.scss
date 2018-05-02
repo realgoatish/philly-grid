@@ -36,7 +36,9 @@ h1, h3 {
 
 .footer {
   position: absolute;
-  bottom: 15px;
+  bottom: 0;
+  margin-top: auto;
+  padding: 40px 0;
   align-self: center;
   text-align: center;
 }
