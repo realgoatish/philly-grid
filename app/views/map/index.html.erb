@@ -2,6 +2,11 @@
 <h2>Philly Grid</h2>
 
 <div id="map" class="map">
+  <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
+  <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
+  <input type="checkbox" id="checkbox_parks" checked> Parks
+
+
   <script>
 
 
@@ -16,13 +21,8 @@
 
     var neighborhoods_layer = new ol.layer.Vector({
         source: neighborhoods_source
-
-
-    var vectorSource = new ol.source.Vector({
-      url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
-      format: new ol.format.GeoJSON()
-
     });
+
 
 
     var affordable_source = new ol.source.Vector({
@@ -41,6 +41,15 @@
         source: housing_counseling_source
     });
 
+    var parks_source = new ol.source.Vector({
+      url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
+      format: new ol.format.GeoJSON()
+    });
+
+    var parks_layer = new ol.layer.Vector({
+      source: parks_source
+    });
+
 
     var map = new ol.Map({
         target: 'map',
@@ -48,7 +57,7 @@
             new ol.layer.Tile({
                 source: new ol.source.OSM()
             }),
-            neighborhoods_layer, housing_counseling_layer,affordable_layer,
+            neighborhoods_layer, housing_counseling_layer,affordable_layer,parks_layer
 
 
         ],
@@ -102,10 +111,7 @@
             var info = document.getElementById('map');
             if (feature) {
                 map.innerHTML = feature.getId() + ': ' + feature.get('name');
-            } else {
-                info.innerHTML = '&nbsp;';
             }
-
             if (feature !== highlight) {
                 if (highlight) {
                     featureOverlay.getSource().removeFeature(highlight);
@@ -126,6 +132,7 @@
         displayFeatureInfo(pixel);
       });
 
+
       // geojson parsing objects for each layer here:
         var neighborhood_geojson = <%= @nei_response.html_safe %>;
         console.log(neighborhood_geojson);
@@ -133,6 +140,61 @@
 
         var counseling_geojson = <%= @counsel_response.html_safe %>;
         console.log(counseling_geojson);
+
+        var affordable_geojson = <%= @affordable_response.html_safe %>;
+        console.log(affordable_geojson);
+
+        var checkbox = document.getElementById("checkbox");
+        console.log("checkbox:",checkbox);
+
+          checkbox.addEventListener('click', function() {
+            var checked = this.checked;
+            console.log(checked);
+            if (checked !== affordable_layer.getVisible()) {
+              affordable_layer.setVisible(checked);
+            }
+          });
+
+          affordable_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+              checkbox.checked = visible;
+            }
+          });
+
+          var checkbox_c = document.getElementById("checkbox_counsel");
+
+            checkbox_c.addEventListener('click', function() {
+              var checked = this.checked;
+              console.log(checked);
+              if (checked !== housing_counseling_layer.getVisible()) {
+                housing_counseling_layer.setVisible(checked);
+              }
+            });
+
+            housing_counseling_layer.on('click:visible', function() {
+              var visible = this.getVisible();
+              if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+              }
+            });
+
+            var checkbox_d = document.getElementById("checkbox_parks");
+
+              checkbox_d.addEventListener('click', function() {
+                var checked = this.checked;
+                console.log(checked);
+                if (checked !== parks_layer.getVisible()) {
+                  parks_layer.setVisible(checked);
+                }
+              });
+
+              parks_layer.on('click:visible', function() {
+                var visible = this.getVisible();
+                if (visible !== checkbox.checked) {
+                  checkbox.checked = visible;
+                }
+              });
 
 
         </script>
