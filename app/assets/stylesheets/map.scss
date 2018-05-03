@@ -1,6 +1,17 @@
 // all the styles related to the map controller here.
 
 .map {
-    height: 50vw;
-    width: 80%;
+  height: 45vw;
+  width: 65%;
   }
+
+.panel {
+  height: 45vw;
+  background-color: white;
+  font-family: 'Roboto', sans-serif;
+  overflow: auto;
+}
+
+.row {
+  min-height: 350px;
+}
