@@ -18,6 +18,12 @@ class ApplicationController < ActionController::Base
     # tell Net::HTTP to GET the URI
     # @response = JSON.parse(Net::HTTP.get(uri))
     @counsel_response = Net::HTTP.get(uri2)
-
 end
+    def parks_api_response
+      uri3 = URI("http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson")
+      p uri3
+      @parks_response = Net::HTTP.get(uri3)
+    end
+
+
 end

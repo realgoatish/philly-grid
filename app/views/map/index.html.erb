@@ -61,13 +61,23 @@ var layers = {//this will be an object where we can call on each layer to be dis
         source: housing_counseling_source
     });
 
+
+// parks layer
+    var parks_source = new ol.source.Vector({
+        url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
+        format: new ol.format.GeoJSON()
+    });
+    var parks_layer = new ol.layer.Vector({
+        source: housing_counseling_source
+    })
+
     var map = new ol.Map({
         target: 'map',
         layers: [
             new ol.layer.Tile({
                 source: new ol.source.OSM()
             }),
-            neighborhoods_layer, housing_counseling_layer,affordable_layer, 
+            neighborhoods_layer, housing_counseling_layer,affordable_layer,parks_layer
 
 
         ],
@@ -83,6 +93,9 @@ var layers = {//this will be an object where we can call on each layer to be dis
 
     var counseling_geojson = <%= @counsel_response.html_safe %>;
     console.log(counseling_geojson);
+
+    var parks_geojson = <%= @parks_response.html_safe %>;
+    console.log(parks_geojson);
     </script>
 </body>
 
