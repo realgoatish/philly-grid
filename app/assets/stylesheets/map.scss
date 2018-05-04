@@ -12,13 +12,22 @@ main {
 }
 
 aside {
-  width: 35%;
+  width: 27%;
   float: left;
   overflow: auto;
   padding: 2.5%;
+  margin-left: 1%;
+  margin-right: 1%;
   overflow: auto;
+  background-color: #FEFCFC;
+  align-self: center;
 }
 
  .row {
    min-height: 250px;
  }
+
+.browse {
+  color: #FEFCFC;
+  font-weight: 900;
+}

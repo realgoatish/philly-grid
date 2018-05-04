@@ -12,8 +12,12 @@ body {
 
 .landing {
   position: absolute;
-  margin-left: 20%;
-  margin-top: 10%;
+  margin-left: 8%;
+  margin-top: 5%;
+  padding: 10%;
+  color: #40404c;
+  mix-blend-mode: screen;
+  background-color: rgb(244, 220, 211);
 }
 
 section {
@@ -41,8 +45,6 @@ nav {
 .main-background {
   background-image: url("front-doors.jpg");
   background-size: cover;
-  opacity: 0.1;
-  z-index: -1;
 }
 
 h1, h2, h3 {
@@ -54,7 +56,8 @@ h1, h2, h3 {
   font-size: 125px;
   font-weight: 900;
   letter-spacing: 5px;
-  color: #ffa5a5;
+  text-transform: capitalize;
+  // opacity: 0.8;
 }
 
 .logo-small {
