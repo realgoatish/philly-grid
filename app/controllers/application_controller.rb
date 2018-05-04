@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
     # @response = JSON.parse(Net::HTTP.get(uri))
     @nei_response = Net::HTTP.get(uri1)
   end
-  
-  def counseling_api_response 
+
+  def counseling_api_response
 # encode URI using the URI constant
     uri2 = URI("https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson")
     p uri2
@@ -24,6 +24,13 @@ end
       p uri3
       @parks_response = Net::HTTP.get(uri3)
     end
-
+    def affordable_api_response
+# encode URI using the URI constant
+  uri2 = URI("https://phl.carto.com/api/v2/sql?q=SELECT+*+FROM+affordablehousingproduction&filename=affordablehousingproduction&format=geojson&skipfields=cartodb_id")
+  p uri2
+  # tell Net::HTTP to GET the URI
+  # @response = JSON.parse(Net::HTTP.get(uri))
+  @affordable_response = Net::HTTP.get(uri2)
+end
 
 end

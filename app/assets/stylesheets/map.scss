@@ -1,3 +1,33 @@
-// Place all the styles related to the map controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// all the styles related to the map controller here.
+
+.map {
+  height: 45vw;
+  width: 65%;
+  outline-style: groove;
+  }
+
+main {
+  width: 65%;
+  float: left;
+}
+
+aside {
+  width: 27%;
+  float: left;
+  overflow: auto;
+  padding: 2.5%;
+  margin-left: 1%;
+  margin-right: 1%;
+  overflow: auto;
+  background-color: #FEFCFC;
+  align-self: center;
+}
+
+ .row {
+   min-height: 250px;
+ }
+
+.browse {
+  color: #FEFCFC;
+  font-weight: 900;
+}
