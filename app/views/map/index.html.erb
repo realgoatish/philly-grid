@@ -12,7 +12,6 @@
     var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
    }
 
-
    var neighborhoods_source = new ol.source.Vector({
        url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
        format: new ol.format.GeoJSON(),
@@ -33,8 +32,28 @@
        // crossOrigin: 'anonymous'
    });
    var affordable_layer = new ol.layer.Vector({
-       source: affordable_source
+       source: affordable_source,
+       style: houseStyle
    });
+
+
+            function houseStyle(feature) {
+              var style = new ol.style.Style({
+                image: new ol.style.Circle({
+                  radius: 6,
+                  stroke: new ol.style.Stroke({
+                    color: '#ffdab9',
+                    width: 2
+                  }),
+                  fill: new ol.style.Fill({
+                    color: '#ffa07a'
+                  })
+                })
+              });
+              return [style];
+            }
+
+
 
    var housing_counseling_source = new ol.source.Vector({
        url: 'http://data.phl.opendata.arcgis.com/datasets/3265538198254e9fb6a8974745adab51_0.geojson',
@@ -43,8 +62,25 @@
    });
 
    var housing_counseling_layer = new ol.layer.Vector({
-       source: housing_counseling_source
+       source: housing_counseling_source,
+       style: conselingStyle
    });
+
+   function conselingStyle(feature) {
+   var stylea = new ol.style.Style({
+     image: new ol.style.Circle({
+       radius: 6,
+       stroke: new ol.style.Stroke({
+         color: '#FFEDE9',
+         width: 2
+       }),
+       fill: new ol.style.Fill({
+         color: 'red'
+       })
+     })
+   });
+   return [stylea];
+ }
 
    var parks_source = new ol.source.Vector({
        url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
@@ -129,6 +165,7 @@
    };
 
 
+
    map.on('pointermove', function(evt) {
        if (evt.dragging) {
            return;
@@ -137,26 +174,8 @@
        displayFeatureInfo(pixel);
    });
 
-    var checkbox_f = document.getElementById("checkbox_Nej");
 
-  checkbox_f.addEventListener('click', function() {
-      var checked = this.checked;
-      console.log(checked);
-      if (checked !== neighborhoods_layer.getVisible()) {
-          neighborhoods_layer.setVisible(checked);
-      }
-  });
-
-  neighborhoods_layer.on('click:visible', function() {
-      var visible = this.getVisible();
-      if (visible !== checkbox.checked) {
-          checkbox.checked = visible;
-      }
-  });
-
-
-
-    var checkbox_f = document.getElementById("checkbox_Nej");
+  var checkbox_f = document.getElementById("checkbox_Nej");
 
   checkbox_f.addEventListener('click', function() {
       var checked = this.checked;
@@ -178,7 +197,6 @@
 
    checkbox.addEventListener('click', function() {
        var checked = this.checked;
-       console.log(checked);
        if (checked !== affordable_layer.getVisible()) {
            affordable_layer.setVisible(checked);
        }
@@ -195,7 +213,6 @@
 
    checkbox_c.addEventListener('click', function() {
        var checked = this.checked;
-       console.log(checked);
        if (checked !== housing_counseling_layer.getVisible()) {
            housing_counseling_layer.setVisible(checked);
        }
@@ -212,7 +229,6 @@
 
    checkbox_d.addEventListener('click', function() {
        var checked = this.checked;
-       console.log(checked);
        if (checked !== parks_layer.getVisible()) {
            parks_layer.setVisible(checked);
        }
@@ -228,7 +244,7 @@
 
 </script>
 </main>
-     
+
   <aside class="panel">
     <div class="row">
       <h3> Apartments in Philadelphia </h3>
@@ -243,5 +259,3 @@
       <p> Highlights: </p>
     </div>
   </aside>
-    
-
