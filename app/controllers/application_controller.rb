@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-
+  
 	require 'net/http'
   require 'json'
   def azavea_api_response
