@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <h2>Philly Grid</h2>
-    <div id="map" class="map">
-        <div id="info" class="test"></div>
-      <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
-      <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
-      <input type="checkbox" id="checkbox_parks" checked> Parks
 
-      <script>
-      var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
+<div class="w3-container">
+    <h2>Philly Grid</h2>
+    <div id="map" class="map w3-col s8 w3-center">
+        <div id="info" class="test"></div>
+            <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
+            <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
+            <input type="checkbox" id="checkbox_parks" checked> Parks
+
+    <script>
+    var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
    }
 
    // geojson parsing objects for each layer here:
@@ -213,5 +208,16 @@
    });
 
       </script>
-        </body>
-</html>
+    </div>
+
+    <div class="panel w3-col s4 w3-center w3-container">
+        <div class="row w3-container">
+        <h3> Apartments in Philadelphia </h3>
+        <p> apartment info section </p>
+        </div>
+        <div class="row w3-container">
+            <h3> Neighborhood Profile </h3>
+            <p> neighborhood info section </p>
+        </div>
+    </div>
+</div>
