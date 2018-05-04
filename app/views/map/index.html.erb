@@ -30,10 +30,16 @@
     <h2>Philly Map</h2>
     <div id="map" class="map"></div>
     <div id="test" class="test"></div>
+    <form class="form-inline">
+        <select id="type" class="form-control">
+            <option value="click" selected>Inspect a neighborhood</option>
+        </select>
+        <span id="status">&nbsp;0 selected features</span>
+    </form>
+    <div id="GeoJSON_Info"></div>
     <script type="text/javascript">
-
-var layers = {//this will be an object where we can call on each layer to be displayed by running a function that activates them
-}
+    var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
+    }
 
     var neighborhoods_source = new ol.source.Vector({
         url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
@@ -62,7 +68,7 @@ var layers = {//this will be an object where we can call on each layer to be dis
     });
 
 
-// parks layer
+    // parks layer
     var parks_source = new ol.source.Vector({
         url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
         format: new ol.format.GeoJSON()
@@ -77,7 +83,7 @@ var layers = {//this will be an object where we can call on each layer to be dis
             new ol.layer.Tile({
                 source: new ol.source.OSM()
             }),
-            neighborhoods_layer, housing_counseling_layer,affordable_layer,parks_layer
+            neighborhoods_layer, housing_counseling_layer, affordable_layer, parks_layer
 
 
         ],
@@ -87,15 +93,96 @@ var layers = {//this will be an object where we can call on each layer to be dis
         })
 
     });
-// geojson parsing objects for each layer here:
+
+    // intersecting layers
+    var layersinmap = [neighborhoods_layer, housing_counseling_layer, affordable_layer];
+
+
+    // intersecting function
+    // var find_extent = forEachFeatureInExtent(extent, callback, opt_this)
+
+    var select = null;
+    var selectClick = new ol.interaction.Select({
+        condition: ol.events.condition.click
+    });
+    console.log("selectClick:", selectClick)
+    var selectAltClick = new ol.interaction.Select({
+        condition: function(mapBrowserEvent) {
+            return ol.events.condition.click(mapBrowserEvent) && ol.events.condition.altKeyOnly(mapBrowserEvent);
+        }
+    });
+    console.log('selectAltClick', selectAltClick)
+    var selectElement = document.getElementById('type');
+    console.log('selectElement', selectElement)
+    // append to div function should be activated in here
+    var changeInteraction = function() {
+        if (select !== null) {
+            map.removeInteraction(select);
+        }
+        var value = selectElement.value;
+        if (value == 'click') {
+            select = selectClick;
+        } else {
+            select = null;
+        }
+        if (select !== null) {
+            map.addInteraction(select);
+            map.on('click', function(event) {
+                neighborhoods_layer.once('precompose', function(event) {
+                    var selectedFeatures = selectClick.getFeatures();
+                    console.log("selctedfeatures", selectedFeatures)
+                    var read = readFeature(selectedFeatures);
+                    read;
+                    console.log("read", read);
+                });
+            });
+
+            function readFeature(features) {
+                consoleText = document.getElementById('GeoJSON_Info');
+                var myfeature = features;
+                console.log("muh features",myfeature)
+                consoleText.innerHTML += myfeature//.get('mapname');
+            }
+
+            select.on('select', function(e) {
+                document.getElementById('status').innerHTML = "&nbsp;" + e.target.getFeatures().getLength() + ' selected features (last operation selected ' + e.selected.length + 'and deselected ' + e.deselected.length + ' features)'
+
+            });
+        }
+    };
+
+    selectElement.onchange = changeInteraction;
+    changeInteraction();
+
+    /////////// 
+
+    // intersecting layers
+    //get extent of neighborhood
+    // select_neighborhood = new ol.interaction.Select({
+
+    //     condition: ol.events.condition.mouseclicked
+    // });
+    // var neighborhood_features = select_neighborhood.getFeatures();
+    // console.log(neighborhood_features);
+    // var neighborhood_feature = neighborhood_features.item(0);
+    // console.log("1 neighborhood feature?", neighborhood_feature)
+    // var id = neighborhood_feature.get('id');
+    // console.log("id", id)
+    // neighborhoods_layer
+    // n_extent = new ol.geom.Polygon(hood)
+    // map.getView().calculateExtent()
+
+    // set extent to neighborhood extent on click
+    //check for features that intersect extent
+    //set interaction on features (highlight)
+    // append feature info to div
+
+    // geojson parsing objects for each layer here:
     var neighborhood_geojson = <%= @nei_response.html_safe %>;
     console.log(neighborhood_geojson);
 
     var counseling_geojson = <%= @counsel_response.html_safe %>;
     console.log(counseling_geojson);
-
-    var parks_geojson = <%= @parks_response.html_safe %>;
-    console.log(parks_geojson);
     </script>
 </body>
 
