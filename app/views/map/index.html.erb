@@ -113,7 +113,7 @@
 
        var info = document.getElementById('info');
        if (feature && feature.get('mapname')) {
-           info.innerHTML = 'Neighborhood: ' + feature.get('mapname');
+           info.innerHTML = 'Neighborhood: ' + feature.get('mapname')
        } else {
            info.innerHTML = '&nbsp;';
        }
@@ -138,19 +138,6 @@
        var pixel = map.getEventPixel(evt.originalEvent);
        displayFeatureInfo(pixel);
    });
-
-
-   // geojson parsing objects for each layer here:
-   var neighborhood_geojson = <%= @nei_response.html_safe %> ;
-   console.log(neighborhood_geojson);
-
-
-   var counseling_geojson = <%= @counsel_response.html_safe %> ;
-   console.log(counseling_geojson);
-
-   var affordable_geojson = <%= @affordable_response.html_safe %> ;
-   console.log(affordable_geojson);
-
 
     var checkbox_f = document.getElementById("checkbox_Nej");
 
