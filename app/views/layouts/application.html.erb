@@ -5,7 +5,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif|Roboto:300" rel="stylesheet">
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
     <!-- OpenLayers is a mapping service that doesn't require
     OAuth Authentication or app registration and is compatible
@@ -22,40 +22,55 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body class="w3-container">
+  <body>
 
-    <div class="header w3-container">
-      <nav class="nav">
-        <ul class="nav-list">
-          <li><a><%= link_to 'Home', root_path %></a></li>
-          <li><a href="#"> Mission </a></li>
-          <li><a href="#"> Contact </a></li>
-          <li><a><%= link_to 'Sign In', new_user_session_path %></a></li>
-            <% if user_signed_in? %>
-              <li><a><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></a></li>
-            <% else %>
-            <% end %>
-          <li><a><%= link_to 'Map', map_index_path %></a></li>
+      <div class="header">
+        <nav class="nav">
+          <ul class="nav-list">
+            <li><a><%= link_to 'Home', root_path %></a></li>
+            <li><a href="#"> Mission </a></li>
+            <li><a href="#"> Contact </a></li>
+            <li class="border-right"><a><%= link_to 'Map', map_index_path %></a></li>
+            <li><a><%= link_to 'Sign In', new_user_session_path %></a></li>
+              <% if user_signed_in? %>
+                <li><a><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></a></li>
+              <% else %>
+              <% end %>
+          </ul>
+        </nav>
+      </div>
+
+    <section class="main-background">
+      <div class="yield-content">
+        <%= yield %>
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
+      </div>
+    </section>
+
+    <section class="float-container">
+      <div class="mission float">
+        <h3> Mission </h3>
+        <p> We're really cool and have a really cool mission statement. </p>
+      </div>
+      <div class="contact float">
+        <h3> Contact </h3>
+        <p> Here's where you can find us. </p>
+      </div>
+      <div class="thanks float">
+        <h3> Special thanks to: </h3>
+        <ul class="thanks-list">
+          <li><a href="#"> <%= image_tag("city.png", class: "thanks-icons") %> </a></li>
+          <li><a href="#"> <%= image_tag("azavea.png", class: "thanks-icons") %> </a></li>
         </ul>
-      </nav>
-    </div>
-
-    <div class="yield-content">
-      <%= yield %>
-    </div>
-
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+      </div>
+    </section>
 
     <div class="footer w3-container">
       <ul class="footer-list">
         <li> &copy 2018 <strong>Philly Grid</strong> </li>
         <li><a href="#"> Terms </a></li>
         <li><a href="#"> Privacy </a></li>
-      </ul>
-      <ul class="footer-list2">
-        <li><a href="#"> <%= image_tag("city.png", class: "thanks-icons") %> </a></li>
-        <li><a href="#"> <%= image_tag("azavea.png", class: "thanks-icons") %> </a></li>
       </ul>
       <ul class="footer-list3">
         <li ><a href="#"> <%= image_tag("facebook.svg", class: "sm-icons") %> </a></li>

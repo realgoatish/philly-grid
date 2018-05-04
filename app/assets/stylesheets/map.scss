@@ -3,15 +3,22 @@
 .map {
   height: 45vw;
   width: 65%;
+  outline-style: groove;
   }
 
-.panel {
-  height: 45vw;
-  background-color: white;
-  font-family: 'Roboto', sans-serif;
+main {
+  width: 65%;
+  float: left;
+}
+
+aside {
+  width: 35%;
+  float: left;
+  overflow: auto;
+  padding: 2.5%;
   overflow: auto;
 }
 
-.row {
-  min-height: 350px;
-}
+ .row {
+   min-height: 250px;
+ }
