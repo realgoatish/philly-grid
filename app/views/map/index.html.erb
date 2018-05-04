@@ -35,13 +35,13 @@
         <select id="type" class="form-control">
             <option value="click" selected>Inspect a neighborhood</option>
         </select>
-        <span id="status">&nbsp;0 selected features</span>
+        <!-- <span id="status">&nbsp;0 selected features</span> -->
     </form>
     <div id="Neighborhood_Info"></div>
-    <div id="counsel_info" </div>
+    <div id="counsel_info"></div>
+    <div id="afford_info"></div>
         <script type="text/javascript">
-        var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
-        }
+        
 
         var neighborhoods_source = new ol.source.Vector({
             url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
@@ -140,19 +140,33 @@
                             var housingaddress2 = selectedFeatures.a[0].N.ADDRESS
                             var housingaddress3 = selectedFeatures.a[0].N.CITY
                             console.log("housingselected:", housingaddress1) //so you know it works
-                            var neighborhoodseleted = selectedFeatures.a[0].N.mapname;
+                            var neighborhoodselected = selectedFeatures.a[0].N.mapname;
                             
-                            console.log(neighborhoodseleted);
+                            console.log(neighborhoodselected);
 
-                            if (neighborhoodseleted !== undefined) {
-                                displayonscreen = document.getElementById('Neighborhood_Info').innerHTML = neighborhoodseleted;
+
+                            var affordname= selectedFeatures.a[0].N.name;
+                            var affordaddress = selectedFeatures.a[0].N.address;
+                            var affordunits = selectedFeatures.a[0].N.total_unit;
+
+                            if (neighborhoodselected !== undefined) {
+                                document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
+                                console.log("neighborhoodselected:",neighborhoodselected);
                                 document.getElementById('counsel_info').innerHTML = '';
-                            };
-                            if (neighborhoodseleted == undefined) {
-                                Displayhousingcenter = document.getElementById('counsel_info').innerHTML = `${housingaddress1} ${housingaddress2} ${housingaddress3}`;
-                                displayonscreen = document.getElementById('Neighborhood_Info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML = '';
+                            }
+                            else if (housingaddress1 !== undefined) {
+                                document.getElementById('counsel_info').innerHTML = `${housingaddress1} ${housingaddress2} ${housingaddress3}`;
+                                document.getElementById('Neighborhood_Info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML='';
 
-                            };
+                            }
+                            else if (affordname !== undefined){
+                                document.getElementById('afford_info').innerHTML = `${affordname} ${affordaddress} ${affordunits};`
+                                document.getElementById('Neighborhood_Info').innerHTML = ''; 
+                                document.getElementById('counsel_info').innerHTML = ''; 
+
+                            }
 
                         });
                     })
@@ -165,10 +179,10 @@
                 //     consoleText.innerHTML += myfeature[2][0];
                 // }
 
-                select.on('select', function(e) {
-                    document.getElementById('status').innerHTML = "&nbsp;" + e.target.getFeatures().getLength() + ' selected features (last operation selected ' + e.selected.length + 'and deselected ' + e.deselected.length + ' features)'
+                // select.on('select', function(e) {
+                //     document.getElementById('status').innerHTML = "&nbsp;" + e.target.getFeatures().getLength() + ' selected features (last operation selected ' + e.selected.length + 'and deselected ' + e.deselected.length + ' features)'
 
-                });
+                // });
             }
         };
 
