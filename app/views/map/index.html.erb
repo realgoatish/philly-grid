@@ -3,6 +3,7 @@
     <h2>Philly Grid</h2>
     <div id="map" class="map w3-col s8 w3-center">
         <div id="info" class="test"></div>
+
             <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
             <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
             <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
@@ -11,6 +12,7 @@
     <script>
     var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
    }
+
 
    var neighborhoods_source = new ol.source.Vector({
        url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
@@ -110,8 +112,8 @@
        });
 
        var info = document.getElementById('info');
-       if (feature) {
-           info.innerHTML = 'Neighborhood: ' + feature.get('mapname');
+       if (feature && feature.get('mapname')) {
+           info.innerHTML = 'Neighborhood: ' + feature.get('mapname')
        } else {
            info.innerHTML = '&nbsp;';
        }
@@ -137,17 +139,23 @@
        displayFeatureInfo(pixel);
    });
 
+    var checkbox_f = document.getElementById("checkbox_Nej");
 
-   // geojson parsing objects for each layer here:
-   var neighborhood_geojson = <%= @nei_response.html_safe %> ;
-   console.log(neighborhood_geojson);
+  checkbox_f.addEventListener('click', function() {
+      var checked = this.checked;
+      console.log(checked);
+      if (checked !== neighborhoods_layer.getVisible()) {
+          neighborhoods_layer.setVisible(checked);
+      }
+  });
 
+  neighborhoods_layer.on('click:visible', function() {
+      var visible = this.getVisible();
+      if (visible !== checkbox.checked) {
+          checkbox.checked = visible;
+      }
+  });
 
-   var counseling_geojson = <%= @counsel_response.html_safe %> ;
-   console.log(counseling_geojson);
-
-   var affordable_geojson = <%= @affordable_response.html_safe %> ;
-   console.log(affordable_geojson);
 
 
     var checkbox_f = document.getElementById("checkbox_Nej");
@@ -218,6 +226,8 @@
            checkbox.checked = visible;
        }
    });
+
+
 
       </script>
     </div>
