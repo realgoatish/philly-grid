@@ -5,7 +5,33 @@
         <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
         <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
         <input type="checkbox" id="checkbox_parks" checked> Parks
-        <script>
+        <aside class="panel">
+        <div class="row">
+            <h3> Apartments in Philadelphia </h3>
+            <p> Apartment Listing: <form class="form-inline">
+                <select id="type" class="form-control">
+                    <option value="click" selected>Inspect a neighborhood</option>
+                </select>
+                <!-- <span id="status">&nbsp;0 selected features</span> -->
+            </form></p>
+            <p> Description: <div id="Neighborhood_Info"></div></p>
+            <p><div id="counsel_info"></div><div id="afford_info"></div><div id="parks_info"></div></p>
+        </div>
+        <div id="info" class="row">
+<!--             <div id="map" class="map"></div>
+            <div id="test" class="test"></div>
+ -->            
+            
+            
+            
+            <h3> Neighborhood Profile </h3>
+            <p> Neighborhood Name: </p>
+            <p> Description: </p>
+            <p> Highlights: </p>
+        </div>
+    </aside>
+    </main>
+    <script>
         var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
         }
 
@@ -66,7 +92,114 @@
             })
 
         });
+/////// select layer and display on DOM  here ...
 
+// intersecting layers
+        var layersinmap = [neighborhoods_layer, housing_counseling_layer, affordable_layer, parks_layer];
+
+
+        // intersecting function
+        // var find_extent = forEachFeatureInExtent(extent, callback, opt_this)
+
+        var select = null;
+        var selectClick = new ol.interaction.Select({
+            condition: ol.events.condition.click
+        });
+        console.log("selectClick:", selectClick)
+        var selectAltClick = new ol.interaction.Select({
+            condition: function(mapBrowserEvent) {
+                return ol.events.condition.click(mapBrowserEvent) && ol.events.condition.altKeyOnly(mapBrowserEvent);
+            }
+        });
+        console.log('selectAltClick', selectAltClick)
+        var selectElement = document.getElementById('type');
+        console.log('selectElement', selectElement)
+        // append to div function should be activated in here
+        var changeInteraction = function() {
+            if (select !== null) {
+                map.removeInteraction(select);
+            }
+            var value = selectElement.value;
+            if (value == 'click') {
+                select = selectClick;
+            } else {
+                select = null;
+            }
+            if (select !== null) {
+                map.addInteraction(select);
+                map.on('click', function(event) {
+
+                    layersinmap.forEach(function(layer) {
+
+                        layer.once('precompose', function(event) {
+                            var selectedFeatures = selectClick.getFeatures();
+                            console.log("selectedfeatures", selectedFeatures)
+                            var housingaddress1 = selectedFeatures.a[0].N.NAME
+                            var housingaddress2 = selectedFeatures.a[0].N.ADDRESS
+                            var housingaddress3 = selectedFeatures.a[0].N.CITY
+                            console.log("housingselected:", housingaddress1) //so you know it works
+                            var neighborhoodselected = selectedFeatures.a[0].N.mapname;
+
+                            console.log(neighborhoodselected);
+                            var parksinfo = selectedFeatures.a;
+                            console.log("parksobject?:",parksinfo);
+
+                            var affordname = selectedFeatures.a[0].N.name;
+                            var affordaddress = selectedFeatures.a[0].N.address;
+                            var affordunits = selectedFeatures.a[0].N.total_unit;
+
+                            if (neighborhoodselected !== undefined) {
+                                document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
+                                console.log("neighborhoodselected:", neighborhoodselected);
+                                document.getElementById('counsel_info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML = '';
+                            } else if (housingaddress1 !== undefined) {
+                                document.getElementById('counsel_info').innerHTML = `${housingaddress1} ${housingaddress2} ${housingaddress3}`;
+                                document.getElementById('Neighborhood_Info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML = '';
+
+                            } else if (affordname !== undefined) {
+                                document.getElementById('afford_info').innerHTML = `Organization ${affordname} ${affordaddress} ${affordunits};`
+                                document.getElementById('Neighborhood_Info').innerHTML = '';
+                                document.getElementById('counsel_info').innerHTML = '';
+
+                            }
+                            else if (parksinfo !== undefined){
+                              document.getElementById('parks_info').innerHTML = `Park Name: ${parksinfo[0].N.ASSET_NAME} Acreage:${Math.round((parksinfo[0].N.ACREAGE + 0.00001) * 100) / 100 } Zipcode: ${parksinfo[0].N.ZIPCODE}`
+                            }
+
+                        });
+                    })
+                });
+
+            }
+        };
+
+        selectElement.onchange = changeInteraction;
+        changeInteraction();
+
+        /////////// 
+
+        // intersecting layers
+        //get extent of neighborhood
+        // select_neighborhood = new ol.interaction.Select({
+
+        //     condition: ol.events.condition.mouseclicked
+        // });
+        // var neighborhood_features = select_neighborhood.getFeatures();
+        // console.log(neighborhood_features);
+        // var neighborhood_feature = neighborhood_features.item(0);
+        // console.log("1 neighborhood feature?", neighborhood_feature)
+        // var id = neighborhood_feature.get('id');
+        // console.log("id", id)
+        // neighborhoods_layer
+        // n_extent = new ol.geom.Polygon(hood)
+        // map.getView().calculateExtent()
+
+        // set extent to neighborhood extent on click
+        //check for features that intersect extent
+        //set interaction on features (highlight)
+        // append feature info to div
 
         var highlightStyleCache = {};
         var featureOverlay = new ol.layer.Vector({
@@ -224,110 +357,7 @@
 
 
 
-/////// select layer and display on DOM  here ...
 
-// intersecting layers
-        var layersinmap = [neighborhoods_layer, housing_counseling_layer, affordable_layer];
-
-
-        // intersecting function
-        // var find_extent = forEachFeatureInExtent(extent, callback, opt_this)
-
-        var select = null;
-        var selectClick = new ol.interaction.Select({
-            condition: ol.events.condition.click
-        });
-        console.log("selectClick:", selectClick)
-        var selectAltClick = new ol.interaction.Select({
-            condition: function(mapBrowserEvent) {
-                return ol.events.condition.click(mapBrowserEvent) && ol.events.condition.altKeyOnly(mapBrowserEvent);
-            }
-        });
-        console.log('selectAltClick', selectAltClick)
-        var selectElement = document.getElementById('type');
-        console.log('selectElement', selectElement)
-        // append to div function should be activated in here
-        var changeInteraction = function() {
-            if (select !== null) {
-                map.removeInteraction(select);
-            }
-            var value = selectElement.value;
-            if (value == 'click') {
-                select = selectClick;
-            } else {
-                select = null;
-            }
-            if (select !== null) {
-                map.addInteraction(select);
-                map.on('click', function(event) {
-
-                    layersinmap.forEach(function(layer) {
-
-                        layer.once('precompose', function(event) {
-                            var selectedFeatures = selectClick.getFeatures();
-                            console.log("selectedfeatures", selectedFeatures)
-                            var housingaddress1 = selectedFeatures.a[0].N.NAME
-                            var housingaddress2 = selectedFeatures.a[0].N.ADDRESS
-                            var housingaddress3 = selectedFeatures.a[0].N.CITY
-                            console.log("housingselected:", housingaddress1) //so you know it works
-                            var neighborhoodselected = selectedFeatures.a[0].N.mapname;
-
-                            console.log(neighborhoodselected);
-
-
-                            var affordname = selectedFeatures.a[0].N.name;
-                            var affordaddress = selectedFeatures.a[0].N.address;
-                            var affordunits = selectedFeatures.a[0].N.total_unit;
-
-                            if (neighborhoodselected !== undefined) {
-                                document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
-                                console.log("neighborhoodselected:", neighborhoodselected);
-                                document.getElementById('counsel_info').innerHTML = '';
-                                document.getElementById('afford_info').innerHTML = '';
-                            } else if (housingaddress1 !== undefined) {
-                                document.getElementById('counsel_info').innerHTML = `${housingaddress1} ${housingaddress2} ${housingaddress3}`;
-                                document.getElementById('Neighborhood_Info').innerHTML = '';
-                                document.getElementById('afford_info').innerHTML = '';
-
-                            } else if (affordname !== undefined) {
-                                document.getElementById('afford_info').innerHTML = `Organization ${affordname} ${affordaddress} ${affordunits};`
-                                document.getElementById('Neighborhood_Info').innerHTML = '';
-                                document.getElementById('counsel_info').innerHTML = '';
-
-                            }
-
-                        });
-                    })
-                });
-
-            }
-        };
-
-        selectElement.onchange = changeInteraction;
-        changeInteraction();
-
-        /////////// 
-
-        // intersecting layers
-        //get extent of neighborhood
-        // select_neighborhood = new ol.interaction.Select({
-
-        //     condition: ol.events.condition.mouseclicked
-        // });
-        // var neighborhood_features = select_neighborhood.getFeatures();
-        // console.log(neighborhood_features);
-        // var neighborhood_feature = neighborhood_features.item(0);
-        // console.log("1 neighborhood feature?", neighborhood_feature)
-        // var id = neighborhood_feature.get('id');
-        // console.log("id", id)
-        // neighborhoods_layer
-        // n_extent = new ol.geom.Polygon(hood)
-        // map.getView().calculateExtent()
-
-        // set extent to neighborhood extent on click
-        //check for features that intersect extent
-        //set interaction on features (highlight)
-        // append feature info to div
 
 
 
@@ -335,29 +365,5 @@
 
 
         </script>
-    </main>
-    <aside class="panel">
-        <div class="row">
-            <h3> Apartments in Philadelphia </h3>
-            <p> Apartment Listing: </p>
-            <p> Description: </p>
-            <p> Et Cetera </p>
-        </div>
-        <div id="info" class="row">
-<!--             <div id="map" class="map"></div>
-            <div id="test" class="test"></div>
- -->            <form class="form-inline">
-                <select id="type" class="form-control">
-                    <option value="click" selected>Inspect a neighborhood</option>
-                </select>
-                <!-- <span id="status">&nbsp;0 selected features</span> -->
-            </form>
-            <div id="Neighborhood_Info"></div>
-            <div id="counsel_info"></div>
-            <div id="afford_info"></div>
-            <h3> Neighborhood Profile </h3>
-            <p> Neighborhood Name: </p>
-            <p> Description: </p>
-            <p> Highlights: </p>
-        </div>
-    </aside>
+    
+    
