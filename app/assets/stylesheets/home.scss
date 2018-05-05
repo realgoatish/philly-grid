@@ -1,19 +1,67 @@
 // all the styles related to the home controller here.
 
 body {
+  position: relative;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   font-family: 'Roboto', sans-serif;
+  background-color: #FEFCFC;
 }
 
-h1, h3 {
-  font-family: 'Open Sans', sans-serif;
-  margin: 0 auto;
+.landing {
+  position: absolute;
+  margin-left: 8%;
+  margin-top: 5%;
+  padding: 10%;
+  color: #40404c;
+  mix-blend-mode: screen;
+  background-color: rgb(244, 220, 211);
 }
 
-.welcome {
-  margin: 5px auto;
+section {
+  width: 100%;
+  height: 100vh;
+  padding: 0 5%;
+}
+
+.header {
+  background-color: #40404c;
+  color: #FEFCFC;
+  border-bottom: 2.5px solid #ffa5a5;
+  border-top: 2.5px solid #ffa5a5;
+}
+
+nav {
+  width: 100vw;
+}
+
+.border-right {
+  padding-right: 15px;
+  border-right: 1px solid #ffa5a5;
+}
+
+.main-background {
+  background-image: url("front-doors.jpg");
+  background-size: cover;
+}
+
+h1, h2, h3 {
+  font-family: 'PT Serif', serif;
+  color: #40404c;
+}
+
+.logo-big {
+  font-size: 125px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  text-transform: capitalize;
+  // opacity: 0.8;
+}
+
+.logo-small {
+  font-size: 18px;
 }
 
 .nav-list {
@@ -29,29 +77,81 @@ h1, h3 {
   text-decoration: none;
 }
 
-.yield-content {
-  align-self: center;
-  width: 65%;
+.nav-list li a:hover {
+  color: #ffa5a5;
 }
 
-.footer {
+.yield-content {
+  width: 100vw;
+  height:650px;
+}
+
+.thanks-list {
+  list-style-type: none;
+}
+
+.float-container {
+  display: flex;
+  flex-direction: row;
+  background-color: #ffa5a5;
+  border-top: 2.5px solid #40404c;
+}
+
+.float {
+  width: 250px;
+  height: 250px;
+  margin: auto;
+}
+
+div.footer {
   position: absolute;
   bottom: 0;
-  margin-top: auto;
-  padding: 40px 0;
-  align-self: center;
+  width: 100vw;
+  min-height: 250px;
+  margin-top: 2%;
+  display: flex;
+  flex-direction: row;
   text-align: center;
+  background-color: #40404c;
+  color: #FEFCFC;
+  border-top: 2.5px solid #FEFCFC;
 }
 
-.footer-list {
+ul.footer-list, ul.footer-list3 {
   list-style-type: none;
+  align-self: center;
+  flex-grow: 1;
 }
 
 .footer-list li {
   display: inline;
-  margin: 0 5px;
 }
 
 .footer-list li a {
   text-decoration: none;
+}
+
+.footer-list li a:hover {
+  color: #ffa5a5;
+}
+
+.footer-list3 li {
+  display: inline;
+}
+
+.footer-list3 li a {
+  text-decoration: none;
+}
+
+img.sm-icons {
+  width: 30px;
+  float: left;
+  margin: 15px;
+  padding: 3.5px;
+  background-color: #ffa5a5;
+  border-radius: 10%;
+}
+
+img.thanks-icons {
+  width: 125px;
 }

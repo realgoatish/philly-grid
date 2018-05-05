@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <h2>Philly Grid</h2>
-    <div id="map" class="map">
-        <div id="info" class="test"></div>
-      <input type="checkbox" id="checkbox_Nej" checked> Neighborhood Outline
-      <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
-      <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
-      <input type="checkbox" id="checkbox_parks" checked> Parks
 
-      <script>
-      var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
+
+  <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
+  <main id="map" class="map main">
+
+            <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
+            <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
+            <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
+            <input type="checkbox" id="checkbox_parks" checked> Parks
+
+
+    <script>
+    var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
    }
 
 
@@ -97,9 +93,6 @@
        source: parks_source
    });
 
-
-
-
    var baseMap = new ol.layer.Tile({
        source: new ol.source.OSM(),
        // crossOrigin: 'anonymous'
@@ -156,8 +149,8 @@
        });
 
        var info = document.getElementById('info');
-       if (feature) {
-           info.innerHTML = 'Neighborhood: ' + feature.get('mapname');
+       if (feature && feature.get('mapname')) {
+           info.innerHTML = 'Neighborhood: ' + feature.get('mapname')
        } else {
            info.innerHTML = '&nbsp;';
        }
@@ -171,7 +164,6 @@
            }
            highlight = feature;
        }
-
    };
 
 
@@ -184,6 +176,23 @@
        displayFeatureInfo(pixel);
    });
 
+   var checkbox_f = document.getElementById("checkbox_Nej");
+
+
+  checkbox_f.addEventListener('click', function() {
+      var checked = this.checked;
+      console.log(checked);
+      if (checked !== neighborhoods_layer.getVisible()) {
+          neighborhoods_layer.setVisible(checked);
+      }
+  });
+
+  neighborhoods_layer.on('click:visible', function() {
+      var visible = this.getVisible();
+      if (visible !== checkbox.checked) {
+          checkbox.checked = visible;
+      }
+  });
 
    var checkbox = document.getElementById("checkbox");
    console.log("checkbox:", checkbox);
@@ -234,26 +243,20 @@
        }
    });
 
-   var checkbox_f = document.getElementById("checkbox_Nej");
-
-   checkbox_f.addEventListener('click', function() {
-       var checked = this.checked;
-       if (checked !== neighborhoods_layer.getVisible()) {
-           neighborhoods_layer.setVisible(checked);
-       }
-   });
-
-   neighborhoods_layer.on('click:visible', function() {
-       var visible = this.getVisible();
-       if (visible !== checkbox.checked) {
-           checkbox.checked = visible;
-       }
-   });
-
-
-
-
-
-      </script>
-        </body>
-</html>
+</script>
+</main>
+     
+  <aside class="panel">
+    <div class="row">
+      <h3> Apartments in Philadelphia </h3>
+      <p> Apartment Listing: </p>
+      <p> Description: </p>
+      <p> Et Cetera </p>
+    </div>
+    <div id="info" class="row">
+      <h3> Neighborhood Profile </h3>
+      <p> Neighborhood Name: </p>
+      <p> Description: </p>
+      <p> Highlights: </p>
+    </div>
+  </aside>
