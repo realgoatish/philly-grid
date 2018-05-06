@@ -58,21 +58,7 @@
             source: affordable_source
         });
 
-// function houseStyle(feature) {
-//               var style = new ol.style.Style({
-//                 image: new ol.style.Circle({
-//                   radius: 6,
-//                   stroke: new ol.style.Stroke({
-//                     color: '#ffdab9',
-//                     width: 2
-//                   }),
-//                   fill: new ol.style.Fill({
-//                     color: '#ffa07a'
-//                   })
-//                 })
-//               });
-//               return [style];
-//             }
+
 
 
         var housing_counseling_source = new ol.source.Vector({
@@ -85,21 +71,7 @@
             source: housing_counseling_source
         });
 
- //        function conselingStyle(feature) {
- //   var stylea = new ol.style.Style({
- //     image: new ol.style.Circle({
- //       radius: 6,
- //       stroke: new ol.style.Stroke({
- //         color: '#FFEDE9',
- //         width: 2
- //       }),
- //       fill: new ol.style.Fill({
- //         color: 'red'
- //       })
- //     })
- //   });
- //   return [stylea];
- // }
+ 
         var parks_source = new ol.source.Vector({
             url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
             format: new ol.format.GeoJSON()
@@ -209,7 +181,37 @@
         selectElement.onchange = changeInteraction;
         changeInteraction();
 
-        /////////// 
+// styling for points 
+function houseStyle(feature) {
+              var style = new ol.style.Style({
+                image: new ol.style.Circle({
+                  radius: 6,
+                  stroke: new ol.style.Stroke({
+                    color: '#ffdab9',
+                    width: 2
+                  }),
+                  fill: new ol.style.Fill({
+                    color: '#ffa07a'
+                  })
+                })
+              });
+              return [style];
+            }
+               function conselingStyle(feature) {
+   var stylea = new ol.style.Style({
+     image: new ol.style.Circle({
+       radius: 6,
+       stroke: new ol.style.Stroke({
+         color: '#FFEDE9',
+         width: 2
+       }),
+       fill: new ol.style.Fill({
+         color: 'red'
+       })
+     })
+   });
+   return [stylea];
+ }/////////// 
 
         // intersecting layers
         //get extent of neighborhood
