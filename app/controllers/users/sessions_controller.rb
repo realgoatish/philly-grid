@@ -10,6 +10,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
+    # redirect_to map_index_path
     super
   end
 
