@@ -1,262 +1,336 @@
 
-
-  <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
-  <main id="map" class="map main">
-
-            <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
-            <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
-            <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
-            <input type="checkbox" id="checkbox_parks" checked> Parks
-
+    <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
+    <main id="map" class="map main">
+        <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
+        <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
+        <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
+        <input type="checkbox" id="checkbox_parks" checked> Parks
 
     <script>
-    var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
-   }
+
+    
+        var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
+        }
 
 
-   var neighborhoods_source = new ol.source.Vector({
-       url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
-       format: new ol.format.GeoJSON(),
-       // crossOrigin: 'anonymous'
-   });
-
-
-
-   var neighborhoods_layer = new ol.layer.Vector({
-       source: neighborhoods_source
-   });
+        var neighborhoods_source = new ol.source.Vector({
+            url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
+            format: new ol.format.GeoJSON(),
+        });
 
 
 
-   var affordable_source = new ol.source.Vector({
-       url: 'https://phl.carto.com/api/v2/sql?q=SELECT+*+FROM+affordablehousingproduction&filename=affordablehousingproduction&format=geojson&skipfields=cartodb_id',
-       format: new ol.format.GeoJSON(),
-       // crossOrigin: 'anonymous'
-   });
-   var affordable_layer = new ol.layer.Vector({
-       source: affordable_source,
-       style: houseStyle
-   });
+        var neighborhoods_layer = new ol.layer.Vector({
+            source: neighborhoods_source
+        });
 
 
-            function houseStyle(feature) {
-              var style = new ol.style.Style({
-                image: new ol.style.Circle({
-                  radius: 6,
-                  stroke: new ol.style.Stroke({
-                    color: '#ffdab9',
-                    width: 2
-                  }),
-                  fill: new ol.style.Fill({
-                    color: '#ffa07a'
-                  })
-                })
-              });
-              return [style];
+
+        var affordable_source = new ol.source.Vector({
+            url: 'https://phl.carto.com/api/v2/sql?q=SELECT+*+FROM+affordablehousingproduction&filename=affordablehousingproduction&format=geojson&skipfields=cartodb_id',
+            format: new ol.format.GeoJSON(),
+        });
+
+        var affordable_layer = new ol.layer.Vector({
+            source: affordable_source
+        });
+
+        var housing_counseling_source = new ol.source.Vector({
+            url: 'http://data.phl.opendata.arcgis.com/datasets/3265538198254e9fb6a8974745adab51_0.geojson',
+            format: new ol.format.GeoJSON(),
+        });
+
+        var housing_counseling_layer = new ol.layer.Vector({
+            source: housing_counseling_source
+        });
+
+        var parks_source = new ol.source.Vector({
+            url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
+            format: new ol.format.GeoJSON()
+        });
+
+        var parks_layer = new ol.layer.Vector({
+            source: parks_source
+        });
+
+        var baseMap = new ol.layer.Tile({
+            source: new ol.source.OSM(),
+        });
+
+        var map = new ol.Map({
+            target: 'map',
+            layers: [baseMap, neighborhoods_layer, housing_counseling_layer, affordable_layer, parks_layer],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([-75.166923, 39.955948]),
+                zoom: 13
+            })
+
+        });
+/////// select layer and display on DOM  here ...
+
+// intersecting layers
+        var layersinmap = [neighborhoods_layer, housing_counseling_layer, affordable_layer, parks_layer];
+
+
+        // intersecting function
+        // var find_extent = forEachFeatureInExtent(extent, callback, opt_this)
+document.addEventListener("DOMContentLoaded", ()=> {
+        var select = null;
+        var selectClick = new ol.interaction.Select({
+            condition: ol.events.condition.click
+        });
+        console.log("selectClick:", selectClick)
+        var selectAltClick = new ol.interaction.Select({
+            condition: function(mapBrowserEvent) {
+                return ol.events.condition.click(mapBrowserEvent) && ol.events.condition.altKeyOnly(mapBrowserEvent);
+            }
+        });
+        console.log('selectAltClick', selectAltClick)
+        var selectElement = document.getElementById('type');
+        console.log('selectElement', selectElement)
+        // append to div function should be activated in here
+        var changeInteraction = function() {
+            if (select !== null) {
+                map.removeInteraction(select);
+            }
+            var value = selectElement.value;
+            if (value == 'click') {
+                select = selectClick;
+            } else {
+                select = null;
+            }
+            if (select !== null) {
+                map.addInteraction(select);
+                map.on('click', function(event) {
+
+                    layersinmap.forEach(function(layer) {
+
+                        layer.once('precompose', function(event) {
+                            var selectedFeatures = selectClick.getFeatures();
+                            console.log("selectedfeatures", selectedFeatures)
+                            var housingaddress1 = selectedFeatures.a[0].N.NAME
+                            var housingaddress2 = selectedFeatures.a[0].N.ADDRESS
+                            var housingaddress3 = selectedFeatures.a[0].N.CITY
+                            console.log("housingselected:", housingaddress1) //so you know it works
+                            var neighborhoodselected = selectedFeatures.a[0].N.mapname;
+
+                            console.log(neighborhoodselected);
+                            var parksinfo = selectedFeatures.a;
+                            console.log("parksobject?:",parksinfo);
+
+                            var affordname = selectedFeatures.a[0].N.name;
+                            var affordaddress = selectedFeatures.a[0].N.address;
+                            var affordunits = selectedFeatures.a[0].N.total_unit;
+
+                            if (neighborhoodselected !== undefined) {
+                                document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
+                                console.log("neighborhoodselected:", neighborhoodselected);
+                                document.getElementById('counsel_info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML = '';
+                            } else if (housingaddress1 !== undefined) {
+                                document.getElementById('counsel_info').innerHTML = `${housingaddress1} ${housingaddress2} ${housingaddress3}`;
+                                document.getElementById('Neighborhood_Info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML = '';
+
+                            } else if (affordname !== undefined) {
+                                document.getElementById('afford_info').innerHTML = `Organization ${affordname} ${affordaddress} ${affordunits};`
+                                document.getElementById('Neighborhood_Info').innerHTML = '';
+                                document.getElementById('counsel_info').innerHTML = '';
+
+                            }
+                            else if (parksinfo !== undefined){
+                              document.getElementById('parks_info').innerHTML = `Park Name: ${parksinfo[0].N.ASSET_NAME} Acreage:${Math.round((parksinfo[0].N.ACREAGE + 0.00001) * 100) / 100 } Zipcode: ${parksinfo[0].N.ZIPCODE}`
+                            }
+
+                        });
+                    })
+                });
+
+            }
+        };
+
+        selectElement.onchange = changeInteraction;
+        changeInteraction();
+})
+
+        var highlightStyleCache = {};
+        var featureOverlay = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+            map: map,
+            style: function(feature, resolution) {
+                var text = resolution * 100000 < 10 ? feature.get('text') : '';
+                if (!highlightStyleCache[text]) {
+                    highlightStyleCache[text] = new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: '#000066',
+                            width: 2
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(192,192,192,0.7)'
+                        }),
+                        text: new ol.style.Text({
+                            font: '12px Calibri,sans-serif',
+                            text: text,
+                            fill: new ol.style.Fill({
+                                color: '#000'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#f00',
+                                width: 3
+                            })
+                        })
+                    });
+                }
+                return highlightStyleCache[text];
+            }
+        });
+
+        var highlight;
+        var displayFeatureInfo = function(pixel) {
+
+            var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+                return feature;
+            });
+
+            var info = document.getElementById('info');
+            if (feature && feature.get('mapname')) {
+                info.innerHTML = 'Neighborhood: ' + feature.get('mapname')
+            } else {
+                info.innerHTML = '&nbsp;';
             }
 
+            if (feature !== highlight) {
+                if (highlight) {
+                    featureOverlay.getSource().removeFeature(highlight);
+                }
+                if (feature) {
+                    featureOverlay.getSource().addFeature(feature);
+                }
+                highlight = feature;
+            }
+        };
 
 
-   var housing_counseling_source = new ol.source.Vector({
-       url: 'http://data.phl.opendata.arcgis.com/datasets/3265538198254e9fb6a8974745adab51_0.geojson',
-       format: new ol.format.GeoJSON(),
-       // crossOrigin: 'anonymous'
-   });
+        map.on('pointermove', function(evt) {
+            if (evt.dragging) {
+                return;
+            }
+            var pixel = map.getEventPixel(evt.originalEvent);
+            displayFeatureInfo(pixel);
+        });
 
-   var housing_counseling_layer = new ol.layer.Vector({
-       source: housing_counseling_source,
-       style: conselingStyle
-   });
+        var checkbox_f = document.getElementById("checkbox_Nej");
 
-   function conselingStyle(feature) {
-   var stylea = new ol.style.Style({
-     image: new ol.style.Circle({
-       radius: 6,
-       stroke: new ol.style.Stroke({
-         color: '#FFEDE9',
-         width: 2
-       }),
-       fill: new ol.style.Fill({
-         color: 'red'
-       })
-     })
-   });
-   return [stylea];
- }
+        checkbox_f.addEventListener('click', function() {
+            var checked = this.checked;
+            console.log(checked);
+            if (checked !== neighborhoods_layer.getVisible()) {
+                neighborhoods_layer.setVisible(checked);
+            }
+        });
 
-   var parks_source = new ol.source.Vector({
-       url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
-       format: new ol.format.GeoJSON()
-   });
-
-   var parks_layer = new ol.layer.Vector({
-       source: parks_source
-   });
-
-   var baseMap = new ol.layer.Tile({
-       source: new ol.source.OSM(),
-       // crossOrigin: 'anonymous'
-   });
-
-   var map = new ol.Map({
-       target: 'map',
-       layers: [baseMap, neighborhoods_layer, housing_counseling_layer, affordable_layer, parks_layer],
-       view: new ol.View({
-           center: ol.proj.fromLonLat([-75.166923, 39.955948]),
-           zoom: 13
-       })
-
-   });
-
-
-   var highlightStyleCache = {};
-   var featureOverlay = new ol.layer.Vector({
-       source: new ol.source.Vector(),
-       map: map,
-       style: function(feature, resolution) {
-           var text = resolution * 100000 < 10 ? feature.get('text') : '';
-           if (!highlightStyleCache[text]) {
-               highlightStyleCache[text] = new ol.style.Style({
-                   stroke: new ol.style.Stroke({
-                       color: '#000066',
-                       width: 2
-                   }),
-                   fill: new ol.style.Fill({
-                       color: 'rgba(192,192,192,0.7)'
-                   }),
-                   text: new ol.style.Text({
-                       font: '12px Calibri,sans-serif',
-                       text: text,
-                       fill: new ol.style.Fill({
-                           color: '#000'
-                       }),
-                       stroke: new ol.style.Stroke({
-                           color: '#f00',
-                           width: 3
-                       })
-                   })
-               });
-           }
-           return highlightStyleCache[text];
-       }
-   });
-
-   var highlight;
-   var displayFeatureInfo = function(pixel) {
-
-       var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
-           return feature;
-       });
-
-       var info = document.getElementById('info');
-       if (feature && feature.get('mapname')) {
-           info.innerHTML = 'Neighborhood: ' + feature.get('mapname')
-       } else {
-           info.innerHTML = '&nbsp;';
-       }
-
-       if (feature !== highlight) {
-           if (highlight) {
-               featureOverlay.getSource().removeFeature(highlight);
-           }
-           if (feature) {
-               featureOverlay.getSource().addFeature(feature);
-           }
-           highlight = feature;
-       }
-   };
+        neighborhoods_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
 
 
 
-   map.on('pointermove', function(evt) {
-       if (evt.dragging) {
-           return;
-       }
-       var pixel = map.getEventPixel(evt.originalEvent);
-       displayFeatureInfo(pixel);
-   });
+        var checkbox_f = document.getElementById("checkbox_Nej");
 
-   var checkbox_f = document.getElementById("checkbox_Nej");
+        checkbox_f.addEventListener('click', function() {
+            var checked = this.checked;
+            console.log(checked);
+            if (checked !== neighborhoods_layer.getVisible()) {
+                neighborhoods_layer.setVisible(checked);
+            }
+        });
+
+        neighborhoods_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+
+        var checkbox = document.getElementById("checkbox");
+        console.log("checkbox:", checkbox);
+
+        checkbox.addEventListener('click', function() {
+            var checked = this.checked;
+            console.log(checked);
+            if (checked !== affordable_layer.getVisible()) {
+                affordable_layer.setVisible(checked);
+            }
+        });
+
+        affordable_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+
+        var checkbox_c = document.getElementById("checkbox_counsel");
+
+        checkbox_c.addEventListener('click', function() {
+            var checked = this.checked;
+            console.log(checked);
+            if (checked !== housing_counseling_layer.getVisible()) {
+                housing_counseling_layer.setVisible(checked);
+            }
+        });
+
+        housing_counseling_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+
+        var checkbox_d = document.getElementById("checkbox_parks");
+
+        checkbox_d.addEventListener('click', function() {
+            var checked = this.checked;
+            console.log(checked);
+            if (checked !== parks_layer.getVisible()) {
+                parks_layer.setVisible(checked);
+            }
+        });
+
+        parks_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+    
+
+        </script>
+    </main>
+
+        <aside class="panel">
+        <div class="row">
+            <h3> Apartments in Philadelphia </h3>
+            <p> Apartment Listing: <form class="form-inline">
+                <select id="type" class="form-control">
+                    <option value="click" selected>Inspect a neighborhood</option>
+                </select>
+            </form></p>
+            <p> Description: <div id="Neighborhood_Info"></div></p>
+            <p><div id="counsel_info"></div><div id="afford_info"></div><div id="parks_info"></div></p>
+        </div>
+        <div id="info" class="row">
+            <h3> Neighborhood Profile </h3>
+            <p> Neighborhood Name: </p>
+            <p> Description: </p>
+            <p> Highlights: </p>
+        </div>
+    </aside>
+    
+    
+    
 
 
-  checkbox_f.addEventListener('click', function() {
-      var checked = this.checked;
-      console.log(checked);
-      if (checked !== neighborhoods_layer.getVisible()) {
-          neighborhoods_layer.setVisible(checked);
-      }
-  });
-
-  neighborhoods_layer.on('click:visible', function() {
-      var visible = this.getVisible();
-      if (visible !== checkbox.checked) {
-          checkbox.checked = visible;
-      }
-  });
-
-   var checkbox = document.getElementById("checkbox");
-   console.log("checkbox:", checkbox);
-
-   checkbox.addEventListener('click', function() {
-       var checked = this.checked;
-       if (checked !== affordable_layer.getVisible()) {
-           affordable_layer.setVisible(checked);
-       }
-   });
-
-   affordable_layer.on('click:visible', function() {
-       var visible = this.getVisible();
-       if (visible !== checkbox.checked) {
-           checkbox.checked = visible;
-       }
-   });
-
-   var checkbox_c = document.getElementById("checkbox_counsel");
-
-   checkbox_c.addEventListener('click', function() {
-       var checked = this.checked;
-       if (checked !== housing_counseling_layer.getVisible()) {
-           housing_counseling_layer.setVisible(checked);
-       }
-   });
-
-   housing_counseling_layer.on('click:visible', function() {
-       var visible = this.getVisible();
-       if (visible !== checkbox.checked) {
-           checkbox.checked = visible;
-       }
-   });
-
-   var checkbox_d = document.getElementById("checkbox_parks");
-
-   checkbox_d.addEventListener('click', function() {
-       var checked = this.checked;
-       if (checked !== parks_layer.getVisible()) {
-           parks_layer.setVisible(checked);
-       }
-   });
-
-   parks_layer.on('click:visible', function() {
-       var visible = this.getVisible();
-       if (visible !== checkbox.checked) {
-           checkbox.checked = visible;
-       }
-   });
-
-</script>
-</main>
-     
-  <aside class="panel">
-    <div class="row">
-      <h3> Apartments in Philadelphia </h3>
-      <p> Apartment Listing: </p>
-      <p> Description: </p>
-      <p> Et Cetera </p>
-    </div>
-    <div id="info" class="row">
-      <h3> Neighborhood Profile </h3>
-      <p> Neighborhood Name: </p>
-      <p> Description: </p>
-      <p> Highlights: </p>
-    </div>
-  </aside>
