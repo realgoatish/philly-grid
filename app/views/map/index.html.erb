@@ -14,6 +14,8 @@
         var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
         }
 
+        // Pull in neighborhoods API and create layer
+
 
         var neighborhoods_source = new ol.source.Vector({
             url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
@@ -26,6 +28,8 @@
             style: outline
         });
 
+        // Styling for the neighborhoods layer
+
                 function outline(feature) {
            var style = new ol.style.Style({
                stroke: new ol.style.Stroke({
@@ -36,7 +40,7 @@
            return [style];
          }
 
-
+        // Pull in affordable housing API and create layer
 
         var affordable_source = new ol.source.Vector({
             url: 'https://phl.carto.com/api/v2/sql?q=SELECT+*+FROM+affordablehousingproduction&filename=affordablehousingproduction&format=geojson&skipfields=cartodb_id',
@@ -47,6 +51,8 @@
             source: affordable_source,
             style: affordstyle
         });
+
+        // Styling for affordable housing layer
 
               function affordstyle(feature) {
          var style = new ol.style.Style({
@@ -64,6 +70,7 @@
          return [style];
        }
 
+        // Pull in housing counseling API and create layer
 
         var housing_counseling_source = new ol.source.Vector({
             url: 'http://data.phl.opendata.arcgis.com/datasets/3265538198254e9fb6a8974745adab51_0.geojson',
@@ -74,6 +81,8 @@
             source: housing_counseling_source,
             style: counselstyle
         });
+
+        // Styling for housing counseling layer
 
               function counselstyle(feature) {
          var style = new ol.style.Style({
@@ -91,7 +100,7 @@
          return [style];
        }
 
-
+        // Pull in parks API and create layer
 
         var parks_source = new ol.source.Vector({
             url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
@@ -102,12 +111,15 @@
             source: parks_source
         });
 
+        // Pull in API for base map
 
         var baseMap = new ol.layer.Tile({
             source: new ol.source.XYZ({
               url: 'http://{1-4}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
             })
         });
+
+        // Initialize the map display
 
         var map = new ol.Map({
             target: 'map',
@@ -118,29 +130,29 @@
             })
 
         });
-/////// select layer and display on DOM  here ...
 
-// intersecting layers
+        // Save layers as a variable for later use
+
         var layersinmap = [neighborhoods_layer, housing_counseling_layer, affordable_layer, parks_layer];
 
 
-        // intersecting function
-        // var find_extent = forEachFeatureInExtent(extent, callback, opt_this)
-document.addEventListener("DOMContentLoaded", ()=> {
-        var select = null;
-        var selectClick = new ol.interaction.Select({
+        // Intersecting function
+        // Wrapped lines 140 - 217 in a "DOMContentLoaded" event listener anonymous function because this code was firing too early and throwing errors
+        
+        document.addEventListener("DOMContentLoaded", ()=> {
+            var select = null;
+            var selectClick = new ol.interaction.Select({
             condition: ol.events.condition.click
         });
-        console.log("selectClick:", selectClick)
         var selectAltClick = new ol.interaction.Select({
             condition: function(mapBrowserEvent) {
                 return ol.events.condition.click(mapBrowserEvent) && ol.events.condition.altKeyOnly(mapBrowserEvent);
             }
         });
-        console.log('selectAltClick', selectAltClick)
         var selectElement = document.getElementById('type');
-        console.log('selectElement', selectElement)
-        // append to div function should be activated in here
+
+        // When specific map layer elements are clicked, grab info to display for the user
+    
         var changeInteraction = function() {
             if (select !== null) {
                 map.removeInteraction(select);
@@ -159,16 +171,15 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
                         layer.once('precompose', function(event) {
                             var selectedFeatures = selectClick.getFeatures();
-                            console.log("selectedfeatures", selectedFeatures)
+                        
                             var housingaddress1 = selectedFeatures.a[0].N.NAME
                             var housingaddress2 = selectedFeatures.a[0].N.ADDRESS
                             var housingaddress3 = selectedFeatures.a[0].N.CITY
-                            console.log("housingselected:", housingaddress1) //so you know it works
+                            
                             var neighborhoodselected = selectedFeatures.a[0].N.mapname;
 
-                            console.log(neighborhoodselected);
+                            
                             var parksinfo = selectedFeatures.a;
-                            console.log("parksobject?:",parksinfo);
 
                             var affordname = selectedFeatures.a[0].N.name;
                             var affordaddress = selectedFeatures.a[0].N.address;
@@ -176,7 +187,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
                             if (neighborhoodselected !== undefined) {
                                 document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
-                                console.log("neighborhoodselected:", neighborhoodselected);
+                                
                                 document.getElementById('counsel_info').innerHTML = '';
                                 document.getElementById('afford_info').innerHTML = '';
                             } else if (housingaddress1 !== undefined) {
@@ -204,6 +215,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
         selectElement.onchange = changeInteraction;
         changeInteraction();
 })
+
+        // Create styling for hover effect
 
         var highlightStyleCache = {};
         var featureOverlay = new ol.layer.Vector({
@@ -237,6 +250,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
             }
         });
 
+        // Grab features to get information and display to user
+
         var highlight;
         var displayFeatureInfo = function(pixel) {
 
@@ -262,6 +277,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
             }
         };
 
+        // On-hover effect
+
         map.on('pointermove', function(evt) {
             if (evt.dragging) {
                 return;
@@ -269,6 +286,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
             var pixel = map.getEventPixel(evt.originalEvent);
             displayFeatureInfo(pixel);
         });
+
+        // Checkboxes and event listeners to toggle each layer on/off
 
         var checkbox_f = document.getElementById("checkbox_Nej");
 
@@ -303,7 +322,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
         });
 
         var checkbox = document.getElementById("checkbox");
-        console.log("checkbox:", checkbox);
+    
 
         checkbox.addEventListener('click', function() {
             var checked = this.checked;
@@ -354,6 +373,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
         </script>
     </main>
+
+<!-- Aside for displaying instructions and info for selected elements on map -->
 
      <aside class="panel">
        <div class="row">
