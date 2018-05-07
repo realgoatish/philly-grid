@@ -1,44 +1,17 @@
 <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
-    <main id="map" class="map main">
-        <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
-        <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
-        <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
-        <input type="checkbox" id="checkbox_parks" checked> Parks
-        <aside class="panel">
-        <div class="row">
-            <h3> Apartments in Philadelphia </h3>
-            <p> Apartment Listing: <form class="form-inline">
-                <select id="type" class="form-control">
-                    <option value="click" selected>Inspect a neighborhood</option>
-                </select>
-                <!-- <span id="status">&nbsp;0 selected features</span> -->
-            </form></p>
-            <p> Description: <div id="Neighborhood_Info"></div></p>
-            <p><div id="counsel_info"></div><div id="afford_info"></div><div id="parks_info"></div></p>
-        </div>
-        <div id="info" class="row">
-<!--             <div id="map" class="map"></div>
-            <div id="test" class="test"></div>
- -->            
-            
-            
-            
-            <h3> Neighborhood Profile </h3>
-            <p> Neighborhood Name: </p>
-            <p> Description: </p>
-            <p> Highlights: </p>
-        </div>
-    </aside>
-    </main>
+
+  <main id="map" class="map main">
+    <div class="checkboxes">
+      <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
+      <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
+      <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
+      <input type="checkbox" id="checkbox_parks" checked> Parks
+    </div>
+    
     <script>
-        var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
-        }
-
-
         var neighborhoods_source = new ol.source.Vector({
             url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
             format: new ol.format.GeoJSON(),
-            // crossOrigin: 'anonymous'
         });
 
 
@@ -52,8 +25,8 @@
         var affordable_source = new ol.source.Vector({
             url: 'https://phl.carto.com/api/v2/sql?q=SELECT+*+FROM+affordablehousingproduction&filename=affordablehousingproduction&format=geojson&skipfields=cartodb_id',
             format: new ol.format.GeoJSON(),
-            // crossOrigin: 'anonymous'
         });
+
         var affordable_layer = new ol.layer.Vector({
             source: affordable_source
         });
@@ -64,7 +37,6 @@
         var housing_counseling_source = new ol.source.Vector({
             url: 'http://data.phl.opendata.arcgis.com/datasets/3265538198254e9fb6a8974745adab51_0.geojson',
             format: new ol.format.GeoJSON(),
-            // crossOrigin: 'anonymous'
         });
 
         var housing_counseling_layer = new ol.layer.Vector({
@@ -83,7 +55,6 @@
 
         var baseMap = new ol.layer.Tile({
             source: new ol.source.OSM(),
-            // crossOrigin: 'anonymous'
         });
 
         var map = new ol.Map({
@@ -103,7 +74,7 @@
 
         // intersecting function
         // var find_extent = forEachFeatureInExtent(extent, callback, opt_this)
-
+document.addEventListener("DOMContentLoaded", ()=> {
         var select = null;
         var selectClick = new ol.interaction.Select({
             condition: ol.events.condition.click
@@ -181,58 +152,6 @@
         selectElement.onchange = changeInteraction;
         changeInteraction();
 
-// styling for points 
-function houseStyle(feature) {
-              var style = new ol.style.Style({
-                image: new ol.style.Circle({
-                  radius: 6,
-                  stroke: new ol.style.Stroke({
-                    color: '#ffdab9',
-                    width: 2
-                  }),
-                  fill: new ol.style.Fill({
-                    color: '#ffa07a'
-                  })
-                })
-              });
-              return [style];
-            }
-               function conselingStyle(feature) {
-   var stylea = new ol.style.Style({
-     image: new ol.style.Circle({
-       radius: 6,
-       stroke: new ol.style.Stroke({
-         color: '#FFEDE9',
-         width: 2
-       }),
-       fill: new ol.style.Fill({
-         color: 'red'
-       })
-     })
-   });
-   return [stylea];
- }/////////// 
-
-        // intersecting layers
-        //get extent of neighborhood
-        // select_neighborhood = new ol.interaction.Select({
-
-        //     condition: ol.events.condition.mouseclicked
-        // });
-        // var neighborhood_features = select_neighborhood.getFeatures();
-        // console.log(neighborhood_features);
-        // var neighborhood_feature = neighborhood_features.item(0);
-        // console.log("1 neighborhood feature?", neighborhood_feature)
-        // var id = neighborhood_feature.get('id');
-        // console.log("id", id)
-        // neighborhoods_layer
-        // n_extent = new ol.geom.Polygon(hood)
-        // map.getView().calculateExtent()
-
-        // set extent to neighborhood extent on click
-        //check for features that intersect extent
-        //set interaction on features (highlight)
-        // append feature info to div
 
         var highlightStyleCache = {};
         var featureOverlay = new ol.layer.Vector({
@@ -387,7 +306,25 @@ function houseStyle(feature) {
                 checkbox.checked = visible;
             }
         });
-        </script>
+    });
+ </script>
+    </main>
 
-
-
+     <aside class="panel">
+        <div class="row">
+            <h3> Apartments in Philadelphia </h3>
+            <p> Apartment Listing: <form style="display:none" class="form-inline">
+                <select id="type" class="form-control">
+                    <option value="click" selected>Inspect a neighborhood</option>
+                </select>
+            </form></p>
+            <p> Description: <div id="Neighborhood_Info"></div></p>
+            <p><div id="counsel_info"></div><div id="afford_info"></div><div id="parks_info"></div></p>
+        </div>
+        <div class="row">
+            <h3> Neighborhood Profile </h3>
+            <p id="info"> </p>
+            <p> Description: </p>
+            <p> Highlights: </p>
+        </div>
+    </aside>
