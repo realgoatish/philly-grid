@@ -262,85 +262,103 @@ document.addEventListener("DOMContentLoaded", ()=> {
             }
         };
 
-   map.on('pointermove', function(evt) {
-       if (evt.dragging) {
-           return;
-       }
-       var pixel = map.getEventPixel(evt.originalEvent);
-       displayFeatureInfo(pixel);
-   });
+        map.on('pointermove', function(evt) {
+            if (evt.dragging) {
+                return;
+            }
+            var pixel = map.getEventPixel(evt.originalEvent);
+            displayFeatureInfo(pixel);
+        });
+
+        var checkbox_f = document.getElementById("checkbox_Nej");
+
+        checkbox_f.addEventListener('click', function() {
+            var checked = this.checked;
+            if (checked !== neighborhoods_layer.getVisible()) {
+                neighborhoods_layer.setVisible(checked);
+            }
+        });
+
+        neighborhoods_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+
+        var checkbox_f = document.getElementById("checkbox_Nej");
+
+        checkbox_f.addEventListener('click', function() {
+            var checked = this.checked;
+            if (checked !== neighborhoods_layer.getVisible()) {
+                neighborhoods_layer.setVisible(checked);
+            }
+        });
+
+        neighborhoods_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+
+        var checkbox = document.getElementById("checkbox");
+        console.log("checkbox:", checkbox);
+
+        checkbox.addEventListener('click', function() {
+            var checked = this.checked;
+            if (checked !== affordable_layer.getVisible()) {
+                affordable_layer.setVisible(checked);
+            }
+        });
+
+        affordable_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+
+        var checkbox_c = document.getElementById("checkbox_counsel");
+
+        checkbox_c.addEventListener('click', function() {
+            var checked = this.checked;
+            if (checked !== housing_counseling_layer.getVisible()) {
+                housing_counseling_layer.setVisible(checked);
+            }
+        });
+
+        housing_counseling_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
+
+        var checkbox_d = document.getElementById("checkbox_parks");
+
+        checkbox_d.addEventListener('click', function() {
+            var checked = this.checked;
+            if (checked !== parks_layer.getVisible()) {
+                parks_layer.setVisible(checked);
+            }
+        });
+
+        parks_layer.on('click:visible', function() {
+            var visible = this.getVisible();
+            if (visible !== checkbox.checked) {
+                checkbox.checked = visible;
+            }
+        });
 
 
-  var checkbox_f = document.getElementById("checkbox_Nej");
-
-  checkbox_f.addEventListener('click', function() {
-      var checked = this.checked;
-      console.log(checked);
-      if (checked !== neighborhoods_layer.getVisible()) {
-          neighborhoods_layer.setVisible(checked);
-      }
-  });
-
-  neighborhoods_layer.on('click:visible', function() {
-      var visible = this.getVisible();
-      if (visible !== checkbox.checked) {
-          checkbox.checked = visible;
-      }
-  });
-
-   var checkbox = document.getElementById("checkbox");
-   console.log("checkbox:", checkbox);
-
-   checkbox.addEventListener('click', function() {
-       var checked = this.checked;
-       if (checked !== affordable_layer.getVisible()) {
-           affordable_layer.setVisible(checked);
-       }
-   });
-
-   affordable_layer.on('click:visible', function() {
-       var visible = this.getVisible();
-       if (visible !== checkbox.checked) {
-           checkbox.checked = visible;
-       }
-   });
-
-   var checkbox_c = document.getElementById("checkbox_counsel");
-
-   checkbox_c.addEventListener('click', function() {
-       var checked = this.checked;
-       if (checked !== housing_counseling_layer.getVisible()) {
-           housing_counseling_layer.setVisible(checked);
-       }
-   });
-
-   housing_counseling_layer.on('click:visible', function() {
-       var visible = this.getVisible();
-       if (visible !== checkbox.checked) {
-           checkbox.checked = visible;
-       }
-   });
-
-   var checkbox_d = document.getElementById("checkbox_parks");
-
-   checkbox_d.addEventListener('click', function() {
-       var checked = this.checked;
-       if (checked !== parks_layer.getVisible()) {
-           parks_layer.setVisible(checked);
-       }
-   });
-
-   parks_layer.on('click:visible', function() {
-       var visible = this.getVisible();
-       if (visible !== checkbox.checked) {
-           checkbox.checked = visible;
-       }
-   });
-
-</script>
-</main>
+        </script>
+    </main>
 
      <aside class="panel">
+       <div class="row">
+         <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Hover over the map or select from one of the available buttons at the top of the map to search neighborhood resources and features.
+       </div>
         <div class="row">
             <h3> Apartments in Philadelphia </h3>
             <p> Apartment Listing: <form class="form-inline">
