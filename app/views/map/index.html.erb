@@ -1,13 +1,15 @@
 
-    <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
-    <main id="map" class="map main">
-        <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
-        <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
-        <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
-        <input type="checkbox" id="checkbox_parks" checked> Parks
+  <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
 
+  <main id="map" class="map main">
+    <div class="checkboxes">
+      <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
+      <input type="checkbox" id="checkbox" checked> Toggle Affordable Housing
+      <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
+      <input type="checkbox" id="checkbox_parks" checked> Parks
+    </div>
+    
     <script>
-
     
         var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
         }
@@ -311,7 +313,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
         </script>
     </main>
 
-        <aside class="panel">
+     <aside class="panel">
         <div class="row">
             <h3> Apartments in Philadelphia </h3>
             <p> Apartment Listing: <form class="form-inline">
@@ -322,15 +324,10 @@ document.addEventListener("DOMContentLoaded", ()=> {
             <p> Description: <div id="Neighborhood_Info"></div></p>
             <p><div id="counsel_info"></div><div id="afford_info"></div><div id="parks_info"></div></p>
         </div>
-        <div id="info" class="row">
+        <div class="row">
             <h3> Neighborhood Profile </h3>
-            <p> Neighborhood Name: </p>
+            <p id="info"> </p>
             <p> Description: </p>
             <p> Highlights: </p>
         </div>
     </aside>
-    
-    
-    
-
-
