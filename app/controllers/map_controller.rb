@@ -1,6 +1,11 @@
 class MapController < ApplicationController
+
+  
+
   def index
-    @response = azavea_api_response
+    @nei_response = azavea_api_response
+    @counsel_response = counseling_api_response
+    @affordable_response = affordable_api_response  
   end
 
   def show
