@@ -11,7 +11,7 @@ Please be advised, in order to access all of the APIs for the map layers you wil
 
 TECHNOLOGIES USED:
 
-Ruby on Rails
+Ruby on Rails <br>
 Vanilla JavaScript
 Devise User Model
 OpenLayers
