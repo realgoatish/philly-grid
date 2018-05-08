@@ -13,7 +13,7 @@ TECHNOLOGIES USED:
 
 Ruby on Rails <br>
 Vanilla JavaScript <br>
-Devise User Model <br>
+Devise <br>
 OpenLayers <br>
 Open Data Philly APIs <br>
 Azavea Philly Neighborhoods API <br>
