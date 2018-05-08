@@ -13,8 +13,9 @@
     <script>
 
 
-
         // Pull in neighborhoods API and create layer
+
+
         var neighborhoods_source = new ol.source.Vector({
             url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
             format: new ol.format.GeoJSON(),
@@ -50,7 +51,6 @@
             style: affordstyle
         });
 
-
         // Styling for affordable housing layer (dots)
 
               function affordstyle(feature) {
@@ -80,7 +80,6 @@
             source: housing_counseling_source,
             style: counselstyle
         });
-
 
         // Styling for housing counseling layer (dots)
 
@@ -213,7 +212,7 @@
 
         selectElement.onchange = changeInteraction;
         changeInteraction();
-
+})
 
         // Create styling for hover effect
 
@@ -368,8 +367,9 @@
                 checkbox.checked = visible;
             }
         });
-    });
- </script>
+
+
+        </script>
     </main>
 
 <!-- Aside for displaying instructions and info for selected elements on map -->
@@ -379,11 +379,9 @@
          <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Use the checkboxes above the map to toggle layers like Neighborhoods, Affordable Housing, Housing Counseling and Parks. Hover over the map to view neighborhood names.  Click on any map element to view more detail.
        </div>
         <div class="row">
-
             <h3> Neighborhood Profile </h3>
             <p id="info"> </p>
             <p> <form class="form-inline" style="display:none">
-
                 <select id="type" class="form-control">
                     <option value="click" selected>Inspect a neighborhood</option>
                 </select>
