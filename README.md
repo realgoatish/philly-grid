@@ -12,17 +12,17 @@ Please be advised, in order to access all of the APIs for the map layers you wil
 TECHNOLOGIES USED:
 
 Ruby on Rails <br>
-Vanilla JavaScript
-Devise User Model
-OpenLayers
-Open Data Philly APIs
-Azavea Philly Neighborhoods API
+Vanilla JavaScript <br>
+Devise User Model <br>
+OpenLayers <br>
+Open Data Philly APIs <br>
+Azavea Philly Neighborhoods API <br>
 
 This project is the brainchild of an awesome team of four:
 
-Briana Pinckney
-Keisan Gittens
-Allegra Anka
-Michael Lamb
+Briana Pinckney <br>
+Keisan Gittens <br>
+Allegra Anka <br>
+Mike Lamb <br>
 
 
