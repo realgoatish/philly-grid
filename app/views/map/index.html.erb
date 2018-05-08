@@ -1,6 +1,8 @@
 
   <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
 
+  <!-- Checkboxes to toggle map layers on/off -->
+
   <main id="map" class="map main">
     <div class="checkboxes">
       <input type="checkbox" id="checkbox_Nej" checked> Toggle Neighborhoods
@@ -11,8 +13,6 @@
 
     <script>
 
-        var layers = { //this will be an object where we can call on each layer to be displayed by running a function that activates them
-        }
 
         // Pull in neighborhoods API and create layer
 
@@ -28,7 +28,7 @@
             style: outline
         });
 
-        // Styling for the neighborhoods layer
+        // Styling for the neighborhoods layer (called on click)
 
                 function outline(feature) {
            var style = new ol.style.Style({
@@ -52,7 +52,7 @@
             style: affordstyle
         });
 
-        // Styling for affordable housing layer
+        // Styling for affordable housing layer (dots)
 
               function affordstyle(feature) {
          var style = new ol.style.Style({
@@ -82,7 +82,7 @@
             style: counselstyle
         });
 
-        // Styling for housing counseling layer
+        // Styling for housing counseling layer (dots)
 
               function counselstyle(feature) {
          var style = new ol.style.Style({
@@ -111,7 +111,7 @@
             source: parks_source
         });
 
-        // Pull in API for base map
+        // Pull in API for base map styling
 
         var baseMap = new ol.layer.Tile({
             source: new ol.source.XYZ({
@@ -137,7 +137,7 @@
 
 
         // Intersecting function
-        // Wrapped lines 140 - 217 in a "DOMContentLoaded" event listener anonymous function because this code was firing too early and throwing errors
+        // Wrapped lines 140 - 217 in a "DOMContentLoaded" event listener because this code was firing too early and unable to grab DOM elements
         
         document.addEventListener("DOMContentLoaded", ()=> {
             var select = null;
@@ -151,7 +151,7 @@
         });
         var selectElement = document.getElementById('type');
 
-        // When specific map layer elements are clicked, grab info to display for the user
+        // When specific map layer elements are clicked, grab info and display it for the user
     
         var changeInteraction = function() {
             if (select !== null) {
@@ -186,23 +186,22 @@
                             var affordunits = selectedFeatures.a[0].N.total_unit;
 
                             if (neighborhoodselected !== undefined) {
-                                document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
-                                
+                                document.getElementById('Neighborhood_Info').innerHTML = "<b>Selected Neighborhood: </b><br>" + neighborhoodselected;
                                 document.getElementById('counsel_info').innerHTML = '';
                                 document.getElementById('afford_info').innerHTML = '';
+
                             } else if (housingaddress1 !== undefined) {
                                 document.getElementById('counsel_info').innerHTML = `${housingaddress1} ${housingaddress2} ${housingaddress3}`;
                                 document.getElementById('Neighborhood_Info').innerHTML = '';
                                 document.getElementById('afford_info').innerHTML = '';
 
                             } else if (affordname !== undefined) {
-                                document.getElementById('afford_info').innerHTML = `Organization ${affordname} ${affordaddress} ${affordunits};`
+                                document.getElementById('afford_info').innerHTML = `<b>Selected Organization: </b><br> ${affordname} ${affordaddress} ${affordunits};`
                                 document.getElementById('Neighborhood_Info').innerHTML = '';
                                 document.getElementById('counsel_info').innerHTML = '';
-
                             }
                             else if (parksinfo !== undefined){
-                              document.getElementById('parks_info').innerHTML = `Park Name: ${parksinfo[0].N.ASSET_NAME} Acreage:${Math.round((parksinfo[0].N.ACREAGE + 0.00001) * 100) / 100 } Zipcode: ${parksinfo[0].N.ZIPCODE}`
+                              document.getElementById('parks_info').innerHTML = `<b>Selected Park Name: </b><br>${parksinfo[0].N.ASSET_NAME} Acreage:${Math.round((parksinfo[0].N.ACREAGE + 0.00001) * 100) / 100 } Zipcode: ${parksinfo[0].N.ZIPCODE}`
                             }
 
                         });
@@ -250,7 +249,7 @@
             }
         });
 
-        // Grab features to get information and display to user
+        // Grab features to get neighborhood information on hover and display for the user
 
         var highlight;
         var displayFeatureInfo = function(pixel) {
@@ -261,7 +260,7 @@
 
             var info = document.getElementById('info');
             if (feature && feature.get('mapname')) {
-                info.innerHTML = 'Neighborhood: ' + feature.get('mapname')
+                info.innerHTML = '<b>Mouseover Neighborhood: </b><br>' + feature.get('mapname')
             } else {
                 info.innerHTML = '&nbsp;';
             }
@@ -378,22 +377,17 @@
 
      <aside class="panel">
        <div class="row">
-         <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Hover over the map or select from one of the available buttons at the top of the map to search neighborhood resources and features.
+         <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Use the checkboxes above the map to toggle layers like Neighborhoods, Affordable Housing, Housing Counseling and Parks. Hover over the map to view neighborhood names.  Click on any map element to view more detail.
        </div>
         <div class="row">
-            <h3> Apartments in Philadelphia </h3>
-            <p> Apartment Listing: <form class="form-inline">
+            <h3> Neighborhood Profile </h3>
+            <p id="info"> </p>
+            <p> <form class="form-inline" style="display:none">
                 <select id="type" class="form-control">
                     <option value="click" selected>Inspect a neighborhood</option>
                 </select>
             </form></p>
-            <p> Description: <div id="Neighborhood_Info"></div></p>
+            <p> <b>Description: </b><br><div id="Neighborhood_Info"></div></p>
             <p><div id="counsel_info"></div><div id="afford_info"></div><div id="parks_info"></div></p>
-        </div>
-        <div class="row">
-            <h3> Neighborhood Profile </h3>
-            <p id="info"> </p>
-            <p> Description: </p>
-            <p> Highlights: </p>
         </div>
     </aside>
