@@ -7,18 +7,29 @@
       <input type="checkbox" id="checkbox_counsel" checked> Toggle Housing Counseling
       <input type="checkbox" id="checkbox_parks" checked> Parks
     </div>
-    
+
     <script>
+
         var neighborhoods_source = new ol.source.Vector({
             url: 'https://raw.githubusercontent.com/azavea/geo-data/master/Neighborhoods_Philadelphia/Neighborhoods_Philadelphia.geojson',
             format: new ol.format.GeoJSON(),
         });
 
 
-
         var neighborhoods_layer = new ol.layer.Vector({
-            source: neighborhoods_source
+            source: neighborhoods_source,
+            style: outline
         });
+
+                function outline(feature) {
+           var style = new ol.style.Style({
+               stroke: new ol.style.Stroke({
+                 color: '#a9a9a9',
+                 width: 2
+               })
+           });
+           return [style];
+         }
 
 
 
@@ -28,10 +39,26 @@
         });
 
         var affordable_layer = new ol.layer.Vector({
-            source: affordable_source
+            source: affordable_source,
+            style: affordstyle
         });
 
 
+              function affordstyle(feature) {
+         var style = new ol.style.Style({
+           image: new ol.style.Circle({
+             radius: 6,
+             stroke: new ol.style.Stroke({
+               color: 'white',
+               width: 2
+             }),
+             fill: new ol.style.Fill({
+               color: '#ffa5a5'
+             })
+           })
+         });
+         return [style];
+       }
 
 
         var housing_counseling_source = new ol.source.Vector({
@@ -40,10 +67,29 @@
         });
 
         var housing_counseling_layer = new ol.layer.Vector({
-            source: housing_counseling_source
+            source: housing_counseling_source,
+            style: counselstyle
         });
 
- 
+
+              function counselstyle(feature) {
+         var style = new ol.style.Style({
+           image: new ol.style.Circle({
+             radius: 6,
+             stroke: new ol.style.Stroke({
+               color: 'white',
+               width: 2
+             }),
+             fill: new ol.style.Fill({
+               color: '40404c'
+             })
+           })
+         });
+         return [style];
+       }
+
+
+
         var parks_source = new ol.source.Vector({
             url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
             format: new ol.format.GeoJSON()
@@ -53,8 +99,11 @@
             source: parks_source
         });
 
+
         var baseMap = new ol.layer.Tile({
-            source: new ol.source.OSM(),
+            source: new ol.source.XYZ({
+              url: 'http://{1-4}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+            })
         });
 
         var map = new ol.Map({
@@ -210,7 +259,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
             }
         };
 
-
         map.on('pointermove', function(evt) {
             if (evt.dragging) {
                 return;
@@ -223,7 +271,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
         checkbox_f.addEventListener('click', function() {
             var checked = this.checked;
-            console.log(checked);
             if (checked !== neighborhoods_layer.getVisible()) {
                 neighborhoods_layer.setVisible(checked);
             }
@@ -236,13 +283,10 @@ document.addEventListener("DOMContentLoaded", ()=> {
             }
         });
 
-
-
         var checkbox_f = document.getElementById("checkbox_Nej");
 
         checkbox_f.addEventListener('click', function() {
             var checked = this.checked;
-            console.log(checked);
             if (checked !== neighborhoods_layer.getVisible()) {
                 neighborhoods_layer.setVisible(checked);
             }
@@ -260,7 +304,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
         checkbox.addEventListener('click', function() {
             var checked = this.checked;
-            console.log(checked);
             if (checked !== affordable_layer.getVisible()) {
                 affordable_layer.setVisible(checked);
             }
@@ -277,7 +320,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
         checkbox_c.addEventListener('click', function() {
             var checked = this.checked;
-            console.log(checked);
             if (checked !== housing_counseling_layer.getVisible()) {
                 housing_counseling_layer.setVisible(checked);
             }
@@ -294,7 +336,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
         checkbox_d.addEventListener('click', function() {
             var checked = this.checked;
-            console.log(checked);
             if (checked !== parks_layer.getVisible()) {
                 parks_layer.setVisible(checked);
             }
@@ -311,6 +352,9 @@ document.addEventListener("DOMContentLoaded", ()=> {
     </main>
 
      <aside class="panel">
+       <div class="row">
+         <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Hover over the map or select from one of the available buttons at the top of the map to search neighborhood resources and features.
+       </div>
         <div class="row">
             <h3> Apartments in Philadelphia </h3>
             <p> Apartment Listing: <form style="display:none" class="form-inline">
