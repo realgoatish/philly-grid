@@ -9,6 +9,7 @@ class MapController < ApplicationController
   end
 
   def show
+  	
   end
 
 end
