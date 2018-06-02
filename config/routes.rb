@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   get 'map/index'
   get 'map/show'
+  root 'welcome#index'
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -14,8 +15,8 @@ Rails.application.routes.draw do
     delete 'users/sign_out', to: 'users/sessions#destroy'
   end 
 
-  devise_scope :user do
-    root to: 'home#index'
-  end 
+  # devise_scope :user do
+  #   root to: 'home#index'
+  # end 
 
 end

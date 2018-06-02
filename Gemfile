@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.4.1'
 
 # gem 'taps'
+
+gem 'pg'
 
 gem 'devise'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -66,15 +67,9 @@ group :test do
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
 end
-
-group :development do
-  gem 'sqlite3'
-end
-
-group :production do
-  gem 'pg'
-end
   
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+ruby '2.4.1'
