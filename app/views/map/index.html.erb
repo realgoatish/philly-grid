@@ -27,6 +27,8 @@
             style: outline
         });
 
+        console.log(neighborhoods_layer);
+
         // Styling for the neighborhoods layer (called on click)
 
                 function outline(feature) {
@@ -51,6 +53,9 @@
             style: affordstyle
         });
 
+        console.log(affordable_layer);
+
+
         // Styling for affordable housing layer (dots)
 
               function affordstyle(feature) {
@@ -71,19 +76,52 @@
 
         // Pull in housing counseling API and create layer
 
-        var housing_counseling_source = new ol.source.Vector({
-            url: 'http://data.phl.opendata.arcgis.com/datasets/3265538198254e9fb6a8974745adab51_0.geojson',
+        var housing_counseling_source = new ol.source.Vector({ /// COMMERCIAL CORRIDORS
+            url: 'https://phl.carto.com/api/v2/sql?q=SELECT+*+FROM+phl.commercial_corridors&filename=phl.commercial_corridors&format=geojson&skipfields=cartodb_id',
             format: new ol.format.GeoJSON(),
         });
 
-        var housing_counseling_layer = new ol.layer.Vector({
+
+        var housing_counseling_layer = new ol.layer.Vector({  /// COMMERCIAL CORRIDORS
             source: housing_counseling_source,
-            style: counselstyle
+            // style: counselstyle
         });
+
+        console.log(housing_counseling_layer);   /// COMMERCIAL CORRIDORS
 
         // Styling for housing counseling layer (dots)
 
-              function counselstyle(feature) {
+    //           function counselstyle(feature) {
+    //      var style = new ol.style.Style({
+    //        image: new ol.style.Circle({
+    //          radius: 6,
+    //          stroke: new ol.style.Stroke({
+    //            color: 'white',
+    //            width: 2
+    //          }),
+    //          fill: new ol.style.Fill({
+    //            color: '40404c'
+    //          })
+    //        })
+    //      });
+    //      return [style];
+    //    }
+
+        // Pull in parks API and create layer
+
+        var parks_source = new ol.source.Vector({   /// RESIDENTIAL PARKING PERMIT BLOCKS
+            url: 'https://phl.carto.com/api/v2/sql?q=select+*+from+phl.residential_parking_permit_blocks&filename=phl.residential_parking_permit_blocks&format=geojson&skipfields=cartodb_id',
+            format: new ol.format.GeoJSON()
+        });
+
+        var parks_layer = new ol.layer.Vector({  /// RESIDENTIAL PARKING PERMIT BLOCKS
+            source: parks_source,
+            style: parksstyle
+        });
+
+        console.log(parks_layer);
+
+        function parksstyle(feature) {   /// RESIDENTIAL PARKING PERMIT BLOCKS
          var style = new ol.style.Style({
            image: new ol.style.Circle({
              radius: 6,
@@ -98,17 +136,6 @@
          });
          return [style];
        }
-
-        // Pull in parks API and create layer
-
-        var parks_source = new ol.source.Vector({
-            url: 'http://data.phl.opendata.arcgis.com/datasets/4df9250e3d624ea090718e56a9018694_0.geojson',
-            format: new ol.format.GeoJSON()
-        });
-
-        var parks_layer = new ol.layer.Vector({
-            source: parks_source
-        });
 
         // Pull in API for base map styling
 
@@ -171,36 +198,62 @@
                         layer.once('precompose', function(event) {
                             var selectedFeatures = selectClick.getFeatures();
                         
-                            var housingaddress1 = selectedFeatures.a[0].N.NAME
-                            var housingaddress2 = selectedFeatures.a[0].N.ADDRESS
-                            var housingaddress3 = selectedFeatures.a[0].N.CITY
+                            var commName = selectedFeatures.a[0].N.name;
+                            var commVacancyCount = selectedFeatures.a[0].N.vac_count;
+                            var commVacancyRate = selectedFeatures.a[0].N.vac_rate;
+                            ////////// THIS IS NOW COMMERCIAL CORRIDORS LAYER
                             
                             var neighborhoodselected = selectedFeatures.a[0].N.mapname;
 
                             
-                            var parksinfo = selectedFeatures.a;
+                            var residentialBlock = selectedFeatures.a[0].N.block;
+                            var residentialDistrictNo = selectedFeatures.a[0].N.district_number;
+                            var residentialStreet = selectedFeatures.a[0].N.street;
+                            ///////// THIS IS NOW RESIDENTIAL PERMIT PARKING BLOCKS
 
                             var affordname = selectedFeatures.a[0].N.name;
                             var affordaddress = selectedFeatures.a[0].N.address;
                             var affordunits = selectedFeatures.a[0].N.total_unit;
 
                             if (neighborhoodselected !== undefined) {
-                                document.getElementById('Neighborhood_Info').innerHTML = "<b>Selected Neighborhood: </b><br>" + neighborhoodselected;
+                                document.getElementById('Neighborhood_Info').setAttribute("style", "display:visible");
+                                document.getElementById('description').innerHTML = '<b>Selected Neighborhood</b>'
+                                document.getElementById('description').setAttribute("style", "display:visible");
+                                document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
                                 document.getElementById('counsel_info').innerHTML = '';
                                 document.getElementById('afford_info').innerHTML = '';
+                                document.getElementById('res_parking_info').innerHTML = '';                           
 
-                            } else if (housingaddress1 !== undefined) {
-                                document.getElementById('counsel_info').innerHTML = `${housingaddress1} ${housingaddress2} ${housingaddress3}`;
+                            } else if (commName !== undefined && commVacancyCount !== undefined) {
+                                document.getElementById('description').innerHTML = '<b>Selected Commercial District Description</b>';
+                                document.getElementById('description').setAttribute("style", "display:visible");
+                                if (commVacancyCount !== null && commVacancyRate !== null) {
+                                document.getElementById('counsel_info').innerHTML = `${commName} <br><br> <b>Commercial Vacancy Count: </b> ${commVacancyCount} <br><br> <b>Commercial Vacancy Rate: </b> ${commVacancyRate}`;
                                 document.getElementById('Neighborhood_Info').innerHTML = '';
                                 document.getElementById('afford_info').innerHTML = '';
+                                document.getElementById('res_parking_info').innerHTML = '';
+                                } else {
+                                document.getElementById('counsel_info').innerHTML = `<b>Name: </b><br>${commName} <br><br> No vacancy data available for this district`; 
+                                document.getElementById('Neighborhood_Info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML = '';
+                                document.getElementById('res_parking_info').innerHTML = '';                                
+                                }
 
                             } else if (affordname !== undefined) {
-                                document.getElementById('afford_info').innerHTML = `<b>Selected Organization: </b><br> ${affordname} ${affordaddress} ${affordunits};`
+                                document.getElementById('description').innerHTML = '<b>Selected Affordable Housing Description</b>';
+                                document.getElementById('description').setAttribute("style", "display:visible");
+                                document.getElementById('afford_info').innerHTML = `<b>Organization: </b><br> ${affordname} ${affordaddress} ${affordunits};`
                                 document.getElementById('Neighborhood_Info').innerHTML = '';
                                 document.getElementById('counsel_info').innerHTML = '';
+                                document.getElementById('res_parking_info').innerHTML = '';                                
                             }
-                            else if (parksinfo !== undefined){
-                              document.getElementById('parks_info').innerHTML = `<b>Selected Park Name: </b><br>${parksinfo[0].N.ASSET_NAME} Acreage:${Math.round((parksinfo[0].N.ACREAGE + 0.00001) * 100) / 100 } Zipcode: ${parksinfo[0].N.ZIPCODE}`
+                            else if (residentialBlock !== undefined){
+                                document.getElementById('description').innerHTML = '<b>Selected Residential Parking Permit Details</b>';
+                                document.getElementById('description').setAttribute("style", "display:visible");
+                                document.getElementById('res_parking_info').innerHTML = `<b>Street: </b> ${residentialStreet} <br>Block: </b>${residentialBlock} <br><b>District Number: <b>${residentialDistrictNo}`;
+                                document.getElementById('counsel_info').innerHTML = '';
+                                document.getElementById('afford_info').innerHTML = '';
+                                document.getElementById('Neighborhood_Info').innerHTML = '';
                             }
 
                         });
@@ -386,7 +439,7 @@
                     <option value="click" selected>Inspect a neighborhood</option>
                 </select>
             </form></p>
-            <p> <b>Description: </b><br><div id="Neighborhood_Info"></div></p>
-            <p><div id="counsel_info"></div><div id="afford_info"></div><div id="parks_info"></div></p>
+            <p id="description" style="display:none"> <b>Selection Description: </b><br><div id="Neighborhood_Info" style="display:none"></div></p>
+            <p><div id="counsel_info"></div><div id="afford_info"></div><div id="res_parking_info"></div></p>
         </div>
     </aside>
