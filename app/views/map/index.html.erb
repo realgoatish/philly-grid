@@ -67,7 +67,7 @@
                width: 2
              }),
              fill: new ol.style.Fill({
-               color: '#ffa5a5'
+               color: '#f3a4a4'
              })
            })
          });
@@ -94,11 +94,11 @@
     function counselstyle(feature) {
          var myStyle = new ol.style.Style({
              stroke: new ol.style.Stroke({
-                color: 'purple',
+                color: '#319FD3',
                 width: 1    
             }),
              fill: new ol.style.Fill({
-               color: 'purple'
+               color: 'rgba(253, 215, 215)'
              })
            });
          return [myStyle];
@@ -194,7 +194,8 @@
 
                         layer.once('precompose', function(event) {
                             var selectedFeatures = selectClick.getFeatures();
-                        
+                            
+                            if (selectedFeatures.a[0] !== undefined) {
                             var commName = selectedFeatures.a[0].N.name;
                             var commVacancyCount = selectedFeatures.a[0].N.vac_count;
                             var commVacancyRate = selectedFeatures.a[0].N.vac_rate;
@@ -211,6 +212,7 @@
                             var affordname = selectedFeatures.a[0].N.name;
                             var affordaddress = selectedFeatures.a[0].N.address;
                             var affordunits = selectedFeatures.a[0].N.total_unit;
+                            
 
                             if (neighborhoodselected !== undefined) {
                                 document.getElementById('Neighborhood_Info').setAttribute("style", "display:visible");
@@ -251,14 +253,16 @@
                                 document.getElementById('counsel_info').innerHTML = '';
                                 document.getElementById('afford_info').innerHTML = '';
                                 document.getElementById('Neighborhood_Info').innerHTML = '';
-                            }
+                            } 
+                        }
 
-                        });
-                    })
-                });
+                    });
+                })
+            });
 
-            }
-        };
+        }
+    };
+
 
         selectElement.onchange = changeInteraction;
         changeInteraction();
