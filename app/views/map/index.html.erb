@@ -84,28 +84,25 @@
 
         var housing_counseling_layer = new ol.layer.Vector({  /// COMMERCIAL CORRIDORS
             source: housing_counseling_source,
-            // style: counselstyle
+            style: counselstyle
         });
 
         console.log(housing_counseling_layer);   /// COMMERCIAL CORRIDORS
 
         // Styling for housing counseling layer (dots)
 
-    //           function counselstyle(feature) {
-    //      var style = new ol.style.Style({
-    //        image: new ol.style.Circle({
-    //          radius: 6,
-    //          stroke: new ol.style.Stroke({
-    //            color: 'white',
-    //            width: 2
-    //          }),
-    //          fill: new ol.style.Fill({
-    //            color: '40404c'
-    //          })
-    //        })
-    //      });
-    //      return [style];
-    //    }
+    function counselstyle(feature) {
+         var myStyle = new ol.style.Style({
+             stroke: new ol.style.Stroke({
+                color: 'purple',
+                width: 1    
+            }),
+             fill: new ol.style.Fill({
+               color: 'purple'
+             })
+           });
+         return [myStyle];
+       }
 
         // Pull in parks API and create layer
 
