@@ -2,8 +2,11 @@ require_relative 'boot'
 
 require 'rails/all'
 
+require 'figaro'
+
  module Agency
    class Application < Rails::Application
+     Figaro.load
 
      # ...
 
