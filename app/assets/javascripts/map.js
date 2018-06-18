@@ -94,7 +94,7 @@
         function commercialStyle(feature) {
             var myStyle = new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: '#D7CCC8',
+                    color: 'E74C3C',
                     width: 0.5
                 }),
                 fill: new ol.style.Fill({
