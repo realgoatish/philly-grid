@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   get 'map/index'
   get 'map/show'
+  
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
     get 'users/sign_up', to: 'users/registrations#new'
     get 'users/sign_in', to: 'users/sessions#new'
     delete 'users/sign_out', to: 'users/sessions#destroy'
+    get '/search' => "search#results", as: :search_results
   end 
 
   devise_scope :user do
