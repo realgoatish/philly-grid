@@ -166,6 +166,7 @@
         // Wrapped lines 140 - 217 in a "DOMContentLoaded" event listener because this code was firing too early and unable to grab DOM elements
 
         document.addEventListener("DOMContentLoaded", () => {
+
             var select = null;
             var selectClick = new ol.interaction.Select({
                 condition: ol.events.condition.click
