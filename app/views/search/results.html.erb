@@ -1,10 +1,40 @@
-    <div class="results">
-	<h1>We found...</h1>
+<div class="results">
+  <h1>Here's what we found...</h1>
 
-	<h2><%= @property.address[:street] %> <br><%= @property.address[:city] %>, <%= @property.address[:state] %> <%= @property.address[:zipcode] %></h2>
-	<h2>Low: <%= number_to_currency(@property.valuation_range[:low]) %></h2>
-	<h2>Med: <%= number_to_currency(@property.price) %></h2>
-	<h2>High: <%= number_to_currency(@property.valuation_range[:high]) %></h2>
+  <div class="property-data">
+    <h6><%= @realprop.address[:street] %>, <%= @realprop.address[:city] %>, <%= @realprop.address[:state] %> <%= @realprop.address[:zipcode] %></h6>
+	<p> <%= @realprop.use_code %> built in <%= @realprop.year_built %></p>
+	<p> <%= @realprop.lot_size_square_feet %> sq. ft lot with <%= @realprop.finished_square_feet %> sq. ft of finished space</p>
+	<p>Tax-assessed market value at <%= number_to_currency(@realprop.tax_assessment) %> in <%= @realprop.tax_assessment_year %> </p>
+	<h6>Zillow Home Valuation Estimate:</h6>
+	<p> Low: <%= number_to_currency(@realprop.valuation_range[:low]) %> </p>
+	<p> Med: <%= number_to_currency(@realprop.price) %> </p>
+	<p> High: <%= number_to_currency(@realprop.valuation_range[:high]) %> </p>
+	
+  </div>
 
+
+  <div class="hood-data">
+	<h6> Richmond Neighborhood Demographics: </h6>
+	<p><em><%= @hood.segmentation['Melting Pot'][:name] %> </em></p> 
+	<p> <%= @hood.segmentation['Melting Pot'][:description] %> </p> 
+	<p><em><%= @hood.segmentation['Wise Old Urbanites'][:name] %> </em></p> 
+	<p> <%= @hood.segmentation['Wise Old Urbanites'][:description] %> </p> 
+	<p><em><%= @hood.segmentation['Golden Years'][:name] %> </em></p> 
+	<p><%= @hood.segmentation['Golden Years'][:description] %> </p>
+  </div>
+
+  <div class="comp-data">
+	<h6>Comparable Homes in the Area: </h6>
+	<% if @comps.success? %>
+	<% @comps.comparables.each do | score, comp | %>
+		 <p> Address: <%= comp.address[:street] %> </p>	     
+	     <p> Zillow Comparability Score: <%= score %> </p>
+		 <p> Last Sale Price: <%= number_to_currency(comp.price) %> </p>
+		 <% end %> 
+	<% else %>
+	<p>Sorry, Zillow has no comparable home data available for this address</p>
+  </div>
+  <% end %>
 
 </div>
