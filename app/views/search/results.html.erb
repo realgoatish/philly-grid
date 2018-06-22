@@ -1,3 +1,4 @@
+
 <div class="results">
   <h1>Here's what we found...</h1>
 
@@ -10,18 +11,19 @@
 	<p> Low: <%= number_to_currency(@realprop.valuation_range[:low]) %> </p>
 	<p> Med: <%= number_to_currency(@realprop.price) %> </p>
 	<p> High: <%= number_to_currency(@realprop.valuation_range[:high]) %> </p>
-	
   </div>
 
 
   <div class="hood-data">
 	<h6> Richmond Neighborhood Demographics: </h6>
-	<p><em><%= @hood.segmentation['Melting Pot'][:name] %> </em></p> 
-	<p> <%= @hood.segmentation['Melting Pot'][:description] %> </p> 
-	<p><em><%= @hood.segmentation['Wise Old Urbanites'][:name] %> </em></p> 
-	<p> <%= @hood.segmentation['Wise Old Urbanites'][:description] %> </p> 
-	<p><em><%= @hood.segmentation['Golden Years'][:name] %> </em></p> 
-	<p><%= @hood.segmentation['Golden Years'][:description] %> </p>
+	<% @hood.segmentation.each do | name, value | %>
+	<p><em> <%= name %> </em><br>
+	    <%= value.map{| _k,v | "#{v}\n"}.join("\n") %> </p>
+	<% end %>
+	<p><%= @hood.characteristics['Education'].join(", ") %> </p>
+	<p><%= @hood.characteristics['Employment'].join(", ") %> </p>
+	<p><%= @hood.characteristics['Income'].join(", ") %> </p>
+	<p><%= @hood.characteristics['People & Culture'].join(", ") %> </p>
   </div>
 
   <div class="comp-data">
