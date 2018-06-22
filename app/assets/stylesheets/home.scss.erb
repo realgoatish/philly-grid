@@ -47,6 +47,7 @@ nav {
 .main-background {
   background-image: url(<%= asset_path 'front-doors.jpg' %>);
   background-size: cover;
+  flex: 1 0 auto;
 }
 
 h1, h2, h3 {
@@ -91,7 +92,8 @@ h1, h2, h3 {
 
 .yield-content {
   width: 100vw;
-  height:650px;
+  height: auto;
+  flex: 1 0 auto;
 }
 
 .thanks-list {
@@ -101,11 +103,14 @@ h1, h2, h3 {
 .float-container {
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   background-color: #ffa5a5;
   border-top: 2.5px solid #FEFCFC;
 }
 
 .float {
+  position: relative;
+  flex-shrink: 0;
   width: 250px;
   height: 250px;
   margin: auto;
@@ -121,6 +126,7 @@ div.footer {
   margin-top: 2%;
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   text-align: center;
   background-color: #40404c;
   color: #FEFCFC;
