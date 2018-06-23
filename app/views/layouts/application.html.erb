@@ -30,11 +30,11 @@
             <li><a><%= link_to 'Home', root_path %></a></li>
             <li><a href="#"><%= link_to 'Mission', map_show_path %> </a></li>
             <li><a href="#"> <%= link_to 'Map', map_index_path %></a></li>
-            <li><a><%= link_to 'Sign In', new_user_session_path %></a></li>
-              <% if user_signed_in? %>
-                <li><a><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></a></li>
-              <% else %>
-              <% end %>
+            <%# <li><a><%= link_to 'Sign In', new_user_session_path</a></li>  %>
+              <%# <% if user_signed_in? %>
+                <%# <li><a><%= link_to 'Sign Out', destroy_user_session_path, method: :delete</a></li>  %>
+              <%# <% else %> 
+              <%# <% end %> 
           </ul>
         </nav>
       </div>
