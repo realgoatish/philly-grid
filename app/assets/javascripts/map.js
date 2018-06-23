@@ -148,6 +148,7 @@
         // Initialize the map display
 
         var map = new ol.Map({
+            theme: null,
             target: 'map',
             layers: [baseMap, neighborhoods_layer, commercial_corridors_layer, affordable_layer, residential_parking_layer],
             view: new ol.View({
@@ -343,7 +344,8 @@
         });
 
         // Checkboxes and event listeners to toggle each layer on/off
-
+        
+        document.addEventListener("DOMContentLoaded", () => {
         var checkbox_f = document.getElementById("checkbox_Nej");
 
         checkbox_f.addEventListener('click', function() {
@@ -360,21 +362,21 @@
             }
         });
 
-        var checkbox_f = document.getElementById("checkbox_Nej");
+        // var checkbox_f = document.getElementById("checkbox_Nej");
 
-        checkbox_f.addEventListener('click', function() {
-            var checked = this.checked;
-            if (checked !== neighborhoods_layer.getVisible()) {
-                neighborhoods_layer.setVisible(checked);
-            }
-        });
+        // checkbox_f.addEventListener('click', function() {
+        //     var checked = this.checked;
+        //     if (checked !== neighborhoods_layer.getVisible()) {
+        //         neighborhoods_layer.setVisible(checked);
+        //     }
+        // });
 
-        neighborhoods_layer.on('click:visible', function() {
-            var visible = this.getVisible();
-            if (visible !== checkbox.checked) {
-                checkbox.checked = visible;
-            }
-        });
+        // neighborhoods_layer.on('click:visible', function() {
+        //     var visible = this.getVisible();
+        //     if (visible !== checkbox.checked) {
+        //         checkbox.checked = visible;
+        //     }
+        // });
 
         var checkbox = document.getElementById("checkbox");
 
@@ -423,4 +425,5 @@
             if (visible !== checkbox.checked) {
                 checkbox.checked = visible;
             }
-        });
+        })
+    });
