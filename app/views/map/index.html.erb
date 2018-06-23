@@ -11,7 +11,12 @@
     </div>
 
     <%= javascript_include_tag "map", "data-turbolinks-track" => true  %>
-
+    <style>
+      .ol-viewport {
+        height: 96% !important;
+        position: sticky !important;
+      }
+    </style>
   </main>
 
 <!-- Aside for displaying instructions and info for selected elements on map -->
