@@ -1,3 +1,21 @@
+// UJS rails 
+var address = "";
+    function ujs(string){
+    Rails.ajax({
+      url: "/index",
+      type: "POST",
+      data: `:address=> ${address}, :citystatezip=> Philadelphia, PA`,
+      success: function(data) {
+        console.log(data)
+      }
+    });
+};
+//submit button event listener. get the params. 
+var submission = document.getElementById('searchbutton');
+submission.addEventListener('click',function(){
+    ujs(submission.getAttribute('name'))
+console.log("hello") };
+
 // Pull in neighborhoods API and create layer
 
 
@@ -427,29 +445,5 @@ document.addEventListener("DOMContentLoaded", () => {
             checkbox.checked = visible;
         }
     })
-    var address = "";
-    function ujs(string){
-    // fetch('/index', {
-    //     method: 'post',
-    //     body: JSON.stringify({ address: "1601 Cherry Street", citystatezip: "Philadelphia, PA" }),
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'X-CSRF-Token': Rails.csrfToken()
-    //     },
-    //     credentials: 'same-origin'
-    // }).then(function(response) {
-    //     return response.json();
-    // }).then(function(data) {
-    //     console.log(data);
-    // })
-    Rails.ajax({
-      url: "/index",
-      type: "POST",
-       :address => '2801 Jasper St', :citystatezip => 'Philadelphia, PA' 
-      data: `:address=> ${address}, :citystatezip=> Philadelphia, PA`,
-      success: function(data) {
-        console.log(data)
-      }
-    });
-};
+    
 });

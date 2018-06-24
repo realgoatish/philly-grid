@@ -38,12 +38,19 @@
             <p><div id="counsel_info"></div><div id="afford_info"></div><div id="res_parking_info"></div></p>
         </div>
     </aside>
+
+    <!-- form is supposed to pass params of "location" to the UJS function -->
   <div class="search">
     <div class="input">
       <p>Search for an Address:</p>
-      <input type="text" placeholder="1601 Cherry Street">
+      <form action="/map/index" method="POST"></form>
+      <input name="[location] type="text" placeholder="1601 Cherry Street">
+        <button id="searchbutton" type="submit" value="Submit">Submit</button>
+
     </div>
   </div>
+
+
     <div class="results">
   <h1>Here's what we found...</h1>
 

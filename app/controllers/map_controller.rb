@@ -3,7 +3,7 @@ class MapController < ApplicationController
   
 
   def index
-    @string = params[:location]
+    @string = params[:address]
     @zillow = Rubillow::PropertyDetails.deep_search_results(@string)
     # @realprop = Rubillow::PropertyDetails.deep_search_results({ :address => '2801 Jasper St', :citystatezip => 'Philadelphia, PA' })
     @hood = Rubillow::Neighborhood.demographics({ :state => 'PA', :city => 'Philadelphia', :neighborhood => @zillow.region })
