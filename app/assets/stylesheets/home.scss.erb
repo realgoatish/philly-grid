@@ -10,6 +10,13 @@ body {
   background-color: #FEFCFC;
 }
 
+#body-grid {
+  display: grid;
+  grid-template-rows: .1fr 2fr .6fr;
+  height: auto;
+  width: auto;
+}
+
 .landing {
   position: absolute;
   margin-left: 1.5%;
@@ -29,7 +36,7 @@ section {
 }
 
 section.main-background {
-  height: 140vh;
+  height: auto;
 }
 
 section.float-container {
@@ -37,6 +44,7 @@ section.float-container {
 }
 
 .header {
+  grid-row: 1;
   background-color: #40404c;
   color: #FEFCFC;
   border-bottom: 2.5px solid #ffa5a5;
@@ -56,6 +64,7 @@ nav {
   background-image: url(<%= asset_path 'front-doors.jpg' %>);
   background-size: cover;
   flex: 1 0 auto;
+  grid-row: 2/3;
 }
 
 h1, h2, h3 {
@@ -139,6 +148,7 @@ div.footer {
   background-color: #40404c;
   color: #FEFCFC;
   border-top: 2.5px solid #FEFCFC;
+  grid-row: 3;
 }
 
 ul.footer-list, ul.footer-list3 {

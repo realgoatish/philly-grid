@@ -2,6 +2,7 @@
 
   <!-- Checkboxes to toggle map layers on/off -->
 
+<div id="grid">
   <main id="map" class="map main">
     <div class="checkboxes">
       <input type="checkbox" id="checkbox_Nej" checked>  Neighborhoods
@@ -13,7 +14,7 @@
     <%= javascript_include_tag "map", "data-turbolinks-track" => true  %>
     <style>
       .ol-viewport {
-        height: 96% !important;
+        height: 96.3% !important;
         position: sticky !important;
       }
     </style>
@@ -25,7 +26,7 @@
        <div class="row">
          <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Use the checkboxes above the map to toggle layers like Neighborhood Boundaries, Affordable Housing, Commercial Corridors and Parking. Hover over the map to view neighborhood names.  Click on any map element to view more detail.
        </div>
-        <div class="row">
+        <div class="row-2">
             <h3> Neighborhood Profile </h3>
             <p id="info"> </p>
             <p> <form class="form-inline" style="display:none">
@@ -37,3 +38,52 @@
             <p><div id="counsel_info"></div><div id="afford_info"></div><div id="res_parking_info"></div></p>
         </div>
     </aside>
+
+    <div class="results">
+  <h1>Here's what we found...</h1>
+
+  <div class="property-data">
+    <h6><%= @realprop.address[:street] %>, <%= @realprop.address[:city] %>, <%= @realprop.address[:state] %> <%= @realprop.address[:zipcode] %></h6>
+	<p> <%= @realprop.use_code %> built in <%= @realprop.year_built %></p>
+  <p> <%= @realprop.bathrooms.to_i %> bathrooms </p>
+  <p> <%= @realprop.bedrooms.to_i %> bedrooms </p>
+  <p> <%= @realprop.total_rooms.to_i %> total rooms </p>	
+	<p> <%= @realprop.finished_square_feet %> sq. ft of finished space on <%= @realprop.lot_size_square_feet %> sq. ft lot</p>
+	<p>Tax-assessed market value at <%= number_to_currency(@realprop.tax_assessment) %> in <%= @realprop.tax_assessment_year %> </p>
+	<h6>Zillow Home Valuation Estimate:</h6>
+	<p> Low: <%= number_to_currency(@realprop.valuation_range[:low]) %> </p>
+	<p> Med: <%= number_to_currency(@realprop.price) %> </p>
+	<p> High: <%= number_to_currency(@realprop.valuation_range[:high]) %> </p>
+	<h6>Zillow Rent Estimate: </h6>
+	<p> </p>
+  </div>
+
+
+  <div class="hood-data">
+	<h6> Richmond Neighborhood Demographics: </h6>
+	<% @hood.segmentation.each do | name, value | %>
+	<p><em> <%= name %> </em><br>
+	    <%= value.map{| _k,v | "#{v}\n"}.join("\n") %> </p>
+	<% end %>
+	<p style="white-space:pre-wrap"><em>Education Level </em><br><%= @hood.characteristics['Education'].join("\n") %> </p>
+	<p style="white-space:pre-wrap"><em>Employment </em><br><%= @hood.characteristics['Employment'].join("\n") %> </p>
+	<p style="white-space:pre-wrap"><em>Income </em><br><%= @hood.characteristics['Income'].join("\n") %> </p>
+	<p style="white-space:pre-wrap"><em>People & Culture </em><br><%= @hood.characteristics['People & Culture'].join("\n") %> </p>
+  </div>
+
+  <div class="comp-data">
+	<h6>Comparable Homes in the Area: </h6>
+	<% if @comps.success? %>
+	<% @comps.comparables.each do | score, comp | %>
+		 <p><em><%= comp.address[:street] %> </em><br>     
+	        Zillow Comparability Score: <%= score %><br>
+			Last Sold Date: <%= comp.last_sold_date %><br>
+		    Last Sale Price: <%= number_to_currency(comp.last_sold_price) %> </p>
+		 <% end %> 
+	<% else %>
+	<p>Sorry, Zillow has no comparable home data available for this address</p>
+  <% end %>
+	</div>
+
+</div>
+</div>

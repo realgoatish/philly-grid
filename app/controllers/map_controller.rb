@@ -3,9 +3,9 @@ class MapController < ApplicationController
   
 
   def index
-    @nei_response = azavea_api_response
-    @counsel_response = counseling_api_response
-    @affordable_response = affordable_api_response  
+    @realprop = Rubillow::PropertyDetails.deep_search_results({ :address => '2801 Jasper St', :citystatezip => 'Philadelphia, PA' })
+    @hood = Rubillow::Neighborhood.demographics({ :state => 'PA', :city => 'Philadelphia', :neighborhood => @realprop.region })
+    @comps = Rubillow::PropertyDetails.deep_comps({ :zpid => @realprop.zpid, :count => 4 })
   end
 
   def show

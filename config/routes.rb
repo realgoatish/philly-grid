@@ -13,7 +13,6 @@ Rails.application.routes.draw do
     get 'users/sign_up', to: 'users/registrations#new'
     get 'users/sign_in', to: 'users/sessions#new'
     delete 'users/sign_out', to: 'users/sessions#destroy'
-    get '/search' => "search#results", as: :search_results
   end 
 
   devise_scope :user do

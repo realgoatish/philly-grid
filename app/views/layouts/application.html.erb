@@ -23,18 +23,18 @@
   </head>
 
   <body>
-
+    <div id="body-grid">
       <div class="header">
         <nav class="nav">
           <ul class="nav-list">
             <li><a><%= link_to 'Home', root_path %></a></li>
             <li><a href="#"><%= link_to 'Mission', map_show_path %> </a></li>
             <li><a href="#"> <%= link_to 'Map', map_index_path %></a></li>
-            <li><a><%= link_to 'Sign In', new_user_session_path %></a></li>
-              <% if user_signed_in? %>
-                <li><a><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></a></li>
-              <% else %>
-              <% end %>
+            <%# <li><a><%= link_to 'Sign In', new_user_session_path</a></li>  %>
+              <%# <% if user_signed_in? %>
+                <%# <li><a><%= link_to 'Sign Out', destroy_user_session_path, method: :delete</a></li>  %>
+              <%# <% else %> 
+              <%# <% end %> 
           </ul>
         </nav>
       </div>
@@ -42,12 +42,14 @@
     <section class="main-background">
       <div class="yield-content">
         <%= yield %>
-        <p class="notice"><%= notice %></p>
-        <p class="alert"><%= alert %></p>
+          <div>
+            <p class="notice"><%= notice %></p>
+            <p class="alert"><%= alert %></p>
+          </div>
       </div>
     </section>
 
-    <section class="float-container">
+    <%# <section class="float-container">
       <div class="mission float">
         <h3> Mission </h3>
         <p> It's hard to find the right apartment. Let us make it easier. </p>
@@ -59,12 +61,15 @@
       <div class="thanks float">
         <h3> Special thanks to: </h3>
         <ul class="thanks-list">
-          <li><a href="https://beta.phila.gov/" target="_blank"> <%= image_tag("city-of-philadelphia.png", class: "thanks-icons") %> </a></li>
-          <li><a href="https://www.azavea.com/" target="_blank"> <%= image_tag("azavea-logo-white.png", class: "thanks-icons", style: "margin-bottom: 7%") %> </a></li>
-          <li><a href="https://www.opendataphilly.org/" target="_blank"> <%= image_tag("odp-logo.png", class: "thanks-icons", style: "width: 185px") %> </a></li>
-        </ul>
+          <li><a href="https://beta.phila.gov/" target="_blank"> <%= image_tag("city-of-philadelphia.png", class: "thanks-icons") %> 
+          <%# </a></li> %>
+          <%# <li><a href="https://www.azavea.com/" target="_blank"> <%= image_tag("azavea-logo-white.png", class: "thanks-icons", style: "margin-bottom: 7%") %> 
+          <%# </a></li>  %>
+          <%# <li><a href="https://www.opendataphilly.org/" target="_blank"> <%= image_tag("odp-logo.png", class: "thanks-icons", style: "width: 185px") %> 
+          <%# </a></li>  %>
+        <%# </ul>
       </div>
-    </section>
+    </section>  %>
 
     <div class="footer">
       <ul class="footer-list">
@@ -73,11 +78,11 @@
         <li><a href="#"> Privacy </a></li>
       </ul>
       <ul class="footer-list3">
-        <li ><a href="#"> <%= image_tag("facebook.svg", class: "sm-icons") %> </a></li>
-        <li ><a href="#"> <%= image_tag("instagram.svg", class: "sm-icons") %> </a></li>
-        <li ><a href="#"> <%= image_tag("twitter.svg", class: "sm-icons") %> </a></li>
+          <li><a href="https://beta.phila.gov/" target="_blank"> <%= image_tag("city-of-philadelphia.png", class: "thanks-icons") %> </a></li>
+          <li><a href="https://www.azavea.com/" target="_blank"> <%= image_tag("azavea-logo-white.png", class: "thanks-icons", style: "margin-bottom: 7%") %> </a></li>
+          <li><a href="https://www.opendataphilly.org/" target="_blank"> <%= image_tag("odp-logo.png", class: "thanks-icons", style: "width: 185px") %> </a></li>
       </ul>
     </div>
-
+  </div>
   </body>
 </html>
