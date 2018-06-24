@@ -38,22 +38,27 @@
             <p><div id="counsel_info"></div><div id="afford_info"></div><div id="res_parking_info"></div></p>
         </div>
     </aside>
-
+  <div class="search">
+    <div class="input">
+      <p>Search for an Address:</p>
+      <input type="text" placeholder="1601 Cherry Street">
+    </div>
+  </div>
     <div class="results">
   <h1>Here's what we found...</h1>
 
   <div class="property-data">
-    <h6><%= @realprop.address[:street] %>, <%= @realprop.address[:city] %>, <%= @realprop.address[:state] %> <%= @realprop.address[:zipcode] %></h6>
-	<p> <%= @realprop.use_code %> built in <%= @realprop.year_built %></p>
-  <p> <%= @realprop.bathrooms.to_i %> bathrooms </p>
-  <p> <%= @realprop.bedrooms.to_i %> bedrooms </p>
-  <p> <%= @realprop.total_rooms.to_i %> total rooms </p>	
-	<p> <%= @realprop.finished_square_feet %> sq. ft of finished space on <%= @realprop.lot_size_square_feet %> sq. ft lot</p>
-	<p>Tax-assessed market value at <%= number_to_currency(@realprop.tax_assessment) %> in <%= @realprop.tax_assessment_year %> </p>
+    <h6><%= @zillow.address[:street] %>, <%= @zillow.address[:city] %>, <%= @zillow.address[:state] %> <%= @zillow.address[:zipcode] %></h6>
+	<p> <%= @zillow.use_code %> built in <%= @zillow.year_built %></p>
+  <p> <%= @zillow.bathrooms.to_i %> bathrooms </p>
+  <p> <%= @zillow.bedrooms.to_i %> bedrooms </p>
+  <p> <%= @zillow.total_rooms.to_i %> total rooms </p>	
+	<p> <%= @zillow.finished_square_feet %> sq. ft of finished space on <%= @zillow.lot_size_square_feet %> sq. ft lot</p>
+	<p>Tax-assessed market value at <%= number_to_currency(@zillow.tax_assessment) %> in <%= @zillow.tax_assessment_year %> </p>
 	<h6>Zillow Home Valuation Estimate:</h6>
-	<p> Low: <%= number_to_currency(@realprop.valuation_range[:low]) %> </p>
-	<p> Med: <%= number_to_currency(@realprop.price) %> </p>
-	<p> High: <%= number_to_currency(@realprop.valuation_range[:high]) %> </p>
+	<p> Low: <%= number_to_currency(@zillow.valuation_range[:low]) %> </p>
+	<p> Med: <%= number_to_currency(@zillow.price) %> </p>
+	<p> High: <%= number_to_currency(@zillow.valuation_range[:high]) %> </p>
 	<h6>Zillow Rent Estimate: </h6>
 	<p> </p>
   </div>

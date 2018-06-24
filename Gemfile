@@ -28,7 +28,8 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-
+# ujs gem 
+gem 'rails-ujs', '~> 5.1.0.beta1'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
@@ -42,7 +43,14 @@ gem 'mapbox-rails'
 # gem 'openstreetmap', :git => 'git://github.com/sozialhelden/openstreetmap'
 gem 'google_maps_service'
 gem 'mapstraction-rails'
-
+# test gem for rake ujs adapter
+gem 'rails-perftest'
+# for testing 
+gem 'rspec-rails'
+# include jquery rails gem 
+gem 'jquery-rails'
+# also need webpacker
+gem 'webpacker', '~> 3.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -62,6 +70,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'rails-perftest'
+  gem 'rspec-rails'
+
 end
 
 group :test do

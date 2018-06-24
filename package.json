@@ -1,5 +1,8 @@
 {
   "name": "agency",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "jquery-ujs": "^1.2.2",
+    "rails-ujs": "^5.2.0"
+  }
 }
