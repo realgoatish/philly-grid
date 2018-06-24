@@ -12,9 +12,12 @@ var address = "";
 };
 //submit button event listener. get the params. 
 var submission = document.getElementById('searchbutton');
+var address = submission.getAttribute('name')
+
 submission.addEventListener('click',function(){
-    ujs(submission.getAttribute('name'))
-console.log("hello") };
+    ujs(address)
+console.log("hello") 
+});
 
 // Pull in neighborhoods API and create layer
 
