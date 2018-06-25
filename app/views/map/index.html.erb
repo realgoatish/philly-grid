@@ -12,6 +12,7 @@
     </div>
 
     <%= javascript_include_tag "map", "data-turbolinks-track" => true  %>
+
     <style>
       .ol-viewport {
         height: 96.3% !important;
@@ -22,68 +23,94 @@
 
 <!-- Aside for displaying instructions and info for selected elements on map -->
 
-     <aside class="panel">
-       <div class="row">
-         <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Use the checkboxes above the map to toggle layers like Neighborhood Boundaries, Affordable Housing, Commercial Corridors and Parking. Hover over the map to view neighborhood names.  Click on any map element to view more detail.
-       </div>
-        <div class="row-2">
-            <h3> Neighborhood Profile </h3>
-            <p id="info"> </p>
-            <p> <form class="form-inline" style="display:none">
-                <select id="type" class="form-control">
-                    <option value="click" selected>Inspect a neighborhood</option>
-                </select>
-            </form></p>
-            <p id="description" style="display:none"> <b>Selection Description: </b><br><div id="Neighborhood_Info" style="display:none"></div></p>
-            <p><div id="counsel_info"></div><div id="afford_info"></div><div id="res_parking_info"></div></p>
-        </div>
-    </aside>
+  <aside class="panel">
+    <div class="row">
+      <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Use the checkboxes above the map to toggle layers like Neighborhood Boundaries, Affordable Housing, Commercial Corridors and Parking. Hover over the map to view neighborhood names.  Click on any map element to view more detail.
+    </div>
+    <div class="row-2">
+      <h3> Neighborhood Profile </h3>
+        <p id="info"> </p>
+        <p> <form class="form-inline" style="display:none">
+          <select id="type" class="form-control">
+            <option value="click" selected>Inspect a neighborhood</option>
+          </select>
+          </form></p>
+          <p id="description" style="display:none"> <b>Selection Description: </b><br>
+          <div id="Neighborhood_Info" style="display:none"></div></p>
+          <p><div id="counsel_info"></div><div id="afford_info"></div><div id="res_parking_info"></div></p>
+    </div>
+  </aside>
 
-    <div class="results">
-  <h1>Here's what we found...</h1>
+    <!-- form is supposed to pass params of "location" to the UJS function -->
 
-  <div class="property-data">
-    <h6><%= @realprop.address[:street] %>, <%= @realprop.address[:city] %>, <%= @realprop.address[:state] %> <%= @realprop.address[:zipcode] %></h6>
-	<p> <%= @realprop.use_code %> built in <%= @realprop.year_built %></p>
-  <p> <%= @realprop.bathrooms.to_i %> bathrooms </p>
-  <p> <%= @realprop.bedrooms.to_i %> bedrooms </p>
-  <p> <%= @realprop.total_rooms.to_i %> total rooms </p>	
-	<p> <%= @realprop.finished_square_feet %> sq. ft of finished space on <%= @realprop.lot_size_square_feet %> sq. ft lot</p>
-	<p>Tax-assessed market value at <%= number_to_currency(@realprop.tax_assessment) %> in <%= @realprop.tax_assessment_year %> </p>
-	<h6>Zillow Home Valuation Estimate:</h6>
-	<p> Low: <%= number_to_currency(@realprop.valuation_range[:low]) %> </p>
-	<p> Med: <%= number_to_currency(@realprop.price) %> </p>
-	<p> High: <%= number_to_currency(@realprop.valuation_range[:high]) %> </p>
-	<h6>Zillow Rent Estimate: </h6>
-	<p> </p>
+  <div class="results">
+    <h1>Here's what we found...</h1>
+    <div class="search">
+      <div class="input">
+        <p>Search for an Address:</p>
+        <%# <form data-remote="true" action="/map/index" data-method="post"></form> %>
+        <%# <input id="searchField" name="address" type="text" placeholder="1601 Cherry Street"> %>
+        <%# <button id="searchButton" type="submit" value="Submit">Submit</button> %>
+          <%= form_tag("/map/index", method: "get") do %>
+            <%= text_field_tag(:address, @string) %>
+            <%= submit_tag("Submit") %>
+          <% end %>
+      </div>
+    </div>
+  
+
+    <div class="property-data">
+      <% if @zillow.success? %>
+      <h6><%= @zillow.address[:street] %>, <%= @zillow.address[:city] %>, <%= @zillow.address[:state] %> <%= @zillow.address[:zipcode] %></h6>
+      <p> <%= @zillow.use_code %> built in <%= @zillow.year_built %></p>
+      <p> <%= @zillow.bathrooms.to_i %> bathrooms </p>
+      <p> <%= @zillow.bedrooms.to_i %> bedrooms </p>
+      <p> <%= @zillow.total_rooms.to_i %> total rooms </p>	
+      <p> <%= @zillow.finished_square_feet %> sq. ft of finished space on <%= @zillow.lot_size_square_feet %> sq. ft lot</p>
+      <p>Tax-assessed market value at <%= number_to_currency(@zillow.tax_assessment) %> in <%= @zillow.tax_assessment_year %> </p>
+
+      <h6>Zillow Home Valuation Estimate:</h6>
+      <p> Low: <%= number_to_currency(@zillow.valuation_range[:low]) %> </p>
+      <p> Med: <%= number_to_currency(@zillow.price) %> </p>
+      <p> High: <%= number_to_currency(@zillow.valuation_range[:high]) %> </p>
+
+      <h6>Zillow Rent Estimate: </h6>
+      <% else %>
+      <% end %>
+    </div>
+  
+  
+
+
+    <div class="hood-data">
+	    <h6> Richmond Neighborhood Demographics: </h6>
+      <% if @zillow.success? %>
+	      <% @hood.segmentation.each do | name, value | %>
+	        <p><em> <%= name %> </em><br>
+	          <%= value.map{| _k,v | "#{v}\n"}.join("\n") %> </p>
+	      <% end %>
+	        <p style="white-space:pre-wrap"><em>Education Level </em><br><%= @hood.characteristics['Education'].join("\n") %> </p>
+	        <p style="white-space:pre-wrap"><em>Employment </em><br><%= @hood.characteristics['Employment'].join("\n") %> </p>
+	        <p style="white-space:pre-wrap"><em>Income </em><br><%= @hood.characteristics['Income'].join("\n") %> </p>
+	        <p style="white-space:pre-wrap"><em>People & Culture </em><br><%= @hood.characteristics['People & Culture'].join("\n")%> </p>
+      <% else %>
+      <% end %>
+    </div>
+  
+  
+
+    <div class="comp-data">
+	    <h6>Comparable Homes in the Area: </h6>
+	    <% if @comps.success? %>
+	      <% @comps.comparables.each do | score, comp | %>
+	        <p><em><%= comp.address[:street] %> </em><br>     
+            Zillow Comparability Score: <%= score %><br>
+            Last Sold Date: <%= comp.last_sold_date %><br>
+		        Last Sale Price: <%= number_to_currency(comp.last_sold_price) %> </p>
+		    <% end %> 
+	    <% else %>
+	      <p>Sorry, Zillow has no comparable home data available for this address</p>
+      <% end %>
+    </div>
   </div>
-
-
-  <div class="hood-data">
-	<h6> Richmond Neighborhood Demographics: </h6>
-	<% @hood.segmentation.each do | name, value | %>
-	<p><em> <%= name %> </em><br>
-	    <%= value.map{| _k,v | "#{v}\n"}.join("\n") %> </p>
-	<% end %>
-	<p style="white-space:pre-wrap"><em>Education Level </em><br><%= @hood.characteristics['Education'].join("\n") %> </p>
-	<p style="white-space:pre-wrap"><em>Employment </em><br><%= @hood.characteristics['Employment'].join("\n") %> </p>
-	<p style="white-space:pre-wrap"><em>Income </em><br><%= @hood.characteristics['Income'].join("\n") %> </p>
-	<p style="white-space:pre-wrap"><em>People & Culture </em><br><%= @hood.characteristics['People & Culture'].join("\n") %> </p>
-  </div>
-
-  <div class="comp-data">
-	<h6>Comparable Homes in the Area: </h6>
-	<% if @comps.success? %>
-	<% @comps.comparables.each do | score, comp | %>
-		 <p><em><%= comp.address[:street] %> </em><br>     
-	        Zillow Comparability Score: <%= score %><br>
-			Last Sold Date: <%= comp.last_sold_date %><br>
-		    Last Sale Price: <%= number_to_currency(comp.last_sold_price) %> </p>
-		 <% end %> 
-	<% else %>
-	<p>Sorry, Zillow has no comparable home data available for this address</p>
-  <% end %>
-	</div>
-
-</div>
 </div>

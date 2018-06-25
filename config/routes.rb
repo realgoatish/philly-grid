@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  get 'map/index'
+  # scope "map" do
+    get 'map/index' => 'map#index'
+    post 'map/index' => 'map#results'
+  # end
+
   get 'map/show'
   
   devise_for :users, controllers: {
