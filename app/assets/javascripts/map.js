@@ -1,3 +1,24 @@
+        // UJS rails 
+var address = "";
+    function ujs(string){
+    Rails.ajax({
+      url: "/index",
+      type: "POST",
+      data: `${address}`,
+      success: function(data) {
+        console.log(data)
+      }
+    });
+};
+//submit button event listener. get the params. 
+var submission = document.getElementById('searchbutton');
+var address = submission.getAttribute('name')
+
+submission.addEventListener('click',function(){
+    ujs(address)
+console.log("hello") 
+});
+
         // Pull in neighborhoods API and create layer
 
 
