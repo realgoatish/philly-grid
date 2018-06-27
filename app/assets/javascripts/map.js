@@ -362,22 +362,6 @@
             }
         });
 
-        // var checkbox_f = document.getElementById("checkbox_Nej");
-
-        // checkbox_f.addEventListener('click', function() {
-        //     var checked = this.checked;
-        //     if (checked !== neighborhoods_layer.getVisible()) {
-        //         neighborhoods_layer.setVisible(checked);
-        //     }
-        // });
-
-        // neighborhoods_layer.on('click:visible', function() {
-        //     var visible = this.getVisible();
-        //     if (visible !== checkbox.checked) {
-        //         checkbox.checked = visible;
-        //     }
-        // });
-
         var checkbox = document.getElementById("checkbox");
 
 
