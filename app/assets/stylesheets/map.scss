@@ -68,8 +68,12 @@ aside {
 }
 
 .browse {
-  color: #FEFCFC;
+  color: #ffa5a5;
   font-weight: 900;
+  text-shadow: -1.5px -1.5px 0 #000,
+                1.5px -1.5px 0 #000,
+                -1.5px 1.5px 0 #000,
+                1.5px 1.5px 0 #000;
 }
 
 .checkboxes {
