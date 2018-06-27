@@ -84,7 +84,7 @@
 
     <div class="hood-data">
 	    <h6> Richmond Neighborhood Demographics: </h6>
-      <% if @zillow.success? %>
+      <% if @hood.segmentation.present? %>
 	      <% @hood.segmentation.each do | name, value | %>
 	        <p><em> <%= name %> </em><br>
 	          <%= value.map{| _k,v | "#{v}\n"}.join("\n") %> </p>
@@ -94,6 +94,7 @@
 	        <p style="white-space:pre-wrap"><em>Income </em><br><%= @hood.characteristics['Income'].join("\n") %> </p>
 	        <p style="white-space:pre-wrap"><em>People & Culture </em><br><%= @hood.characteristics['People & Culture'].join("\n")%> </p>
       <% else %>
+      <p>Sorry, Zillow has no demographic information for this neighborhood.</p>
       <% end %>
     </div>
   
