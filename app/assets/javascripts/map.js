@@ -218,45 +218,53 @@
                                     var affordaddress = selectedFeatures.a[0].N.address;
                                     var affordunits = selectedFeatures.a[0].N.total_unit;
 
+                                    var selectedItemHeader = document.getElementById('description');
+                                    var neighborhoodInfoSection = document.getElementById('Neighborhood_Info');
+                                    var commercialInfoSection = document.getElementById('counsel_info');
+                                    var affordableInfoSection = document.getElementById('afford_info');
+                                    var parkingInfoSection = document.getElementById('res_parking_info');
+
+
 
                                     if (neighborhoodselected !== undefined) {
-                                        document.getElementById('Neighborhood_Info').setAttribute("style", "display:visible");
-                                        document.getElementById('description').innerHTML = '<b>Selected Neighborhood</b>'
-                                        document.getElementById('description').setAttribute("style", "display:visible");
-                                        document.getElementById('Neighborhood_Info').innerHTML = neighborhoodselected;
-                                        document.getElementById('counsel_info').innerHTML = '';
-                                        document.getElementById('afford_info').innerHTML = '';
-                                        document.getElementById('res_parking_info').innerHTML = '';
+                                        neighborhoodInfoSection.setAttribute("style", "display:visible");
+                                        selectedItemHeader.innerHTML = '<b>Selected Neighborhood</b>'
+                                        selectedItemHeader.setAttribute("style", "display:visible");
+                                        neighborhoodInfoSection.innerHTML = neighborhoodselected;
+                                        commercialInfoSection.innerHTML = '';
+                                        affordableInfoSection.innerHTML = '';
+                                        parkingInfoSection.innerHTML = '';
 
                                     } else if (commName !== undefined && commVacancyCount !== undefined) {
-                                        document.getElementById('description').innerHTML = '<b>Selected Commercial District Description</b>';
-                                        document.getElementById('description').setAttribute("style", "display:visible");
+                                        selectedItemHeader.innerHTML = '<b>Selected Commercial District Description</b>';
+                                        selectedItemHeader.setAttribute("style", "display:visible");
                                         if (commVacancyCount !== null && commVacancyRate !== null) {
-                                            document.getElementById('counsel_info').innerHTML = `${commName} <br><br> <b>Commercial Vacancy Count: </b> ${commVacancyCount} <br><br> <b>Commercial Vacancy Rate: </b> ${commVacancyRate}`;
-                                            document.getElementById('Neighborhood_Info').innerHTML = '';
-                                            document.getElementById('afford_info').innerHTML = '';
-                                            document.getElementById('res_parking_info').innerHTML = '';
+                                            commercialInfoSection.innerHTML = `${commName} <br><br> <b>Commercial Vacancy Count: </b> ${commVacancyCount} <br><br> <b>Commercial Vacancy Rate: </b> ${commVacancyRate}`;
+                                            neighborhoodInfoSection.innerHTML = '';
+                                            affordableInfoSection.innerHTML = '';
+                                            parkingInfoSection.innerHTML = '';
                                         } else {
-                                            document.getElementById('counsel_info').innerHTML = `<b>Name: </b><br>${commName} <br><br> No vacancy data available for this district`;
-                                            document.getElementById('Neighborhood_Info').innerHTML = '';
-                                            document.getElementById('afford_info').innerHTML = '';
-                                            document.getElementById('res_parking_info').innerHTML = '';
+                                            commercialInfoSection.innerHTML = `<b>Name: </b><br>${commName} <br><br> No vacancy data available for this district`;
+                                            neighborhoodInfoSection.innerHTML = '';
+                                            affordableInfoSection.innerHTML = '';
+                                            parkingInfoSection.innerHTML = '';
                                         }
 
                                     } else if (affordname !== undefined) {
-                                        document.getElementById('description').innerHTML = '<b>Selected Affordable Housing Description</b>';
-                                        document.getElementById('description').setAttribute("style", "display:visible");
-                                        document.getElementById('afford_info').innerHTML = `<b>Organization: </b><br> ${affordname} ${affordaddress} ${affordunits};`
-                                        document.getElementById('Neighborhood_Info').innerHTML = '';
-                                        document.getElementById('counsel_info').innerHTML = '';
-                                        document.getElementById('res_parking_info').innerHTML = '';
+                                        selectedItemHeader.innerHTML = '<b>Selected Affordable Housing Description</b>';
+                                        selectedItemHeader.setAttribute("style", "display:visible");
+                                        affordableInfoSection.innerHTML = `<b>Organization: </b><br> ${affordname} ${affordaddress} ${affordunits};`
+                                        neighborhoodInfoSection.innerHTML = '';
+                                        commercialInfoSection.innerHTML = '';
+                                        parkingInfoSection.innerHTML = '';
+
                                     } else if (residentialBlock !== undefined) {
-                                        document.getElementById('description').innerHTML = '<b>Selected Residential Parking Permit Details</b>';
-                                        document.getElementById('description').setAttribute("style", "display:visible");
-                                        document.getElementById('res_parking_info').innerHTML = `<b>Street: </b> ${residentialStreet} <br>Block: </b>${residentialBlock} <br><b>District Number: <b>${residentialDistrictNo}`;
-                                        document.getElementById('counsel_info').innerHTML = '';
-                                        document.getElementById('afford_info').innerHTML = '';
-                                        document.getElementById('Neighborhood_Info').innerHTML = '';
+                                        selectedItemHeader.innerHTML = '<b>Selected Residential Parking Permit Details</b>';
+                                        selectedItemHeader.setAttribute("style", "display:visible");
+                                        parkingInfoSection.innerHTML = `<b>Street: </b> ${residentialStreet} <br>Block: </b>${residentialBlock} <br><b>District Number: <b>${residentialDistrictNo}`;
+                                        commercialInfoSection.innerHTML = '';
+                                        affordableInfoSection.innerHTML = '';
+                                        neighborhoodInfoSection.innerHTML = '';
                                     }
                                 }
 
