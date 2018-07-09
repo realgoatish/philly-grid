@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
   # scope "map" do
-    get 'map/index' => 'map#index'
-    post 'map/index' => 'map#results'
+    get 'map' => 'map#index'
+    # post 'map/index' => 'map#results'
   # end
 
-  get 'map/show'
+  get 'mission' => 'map#show'
   
   devise_for :users, controllers: {
     registrations: 'users/registrations',
