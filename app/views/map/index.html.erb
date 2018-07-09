@@ -25,10 +25,10 @@
 
   <aside class="panel">
     <div class="row">
-      <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you find the perfect apartment in Philadelphia, in a neighborhood you'll love. Use the checkboxes above the map to toggle layers like Neighborhood Boundaries, Affordable Housing, Commercial Corridors and Parking. Hover over the map to view neighborhood names.  Click on any map element to view more detail.
+      <p> <span><h3>Philly Grid |</h3></span> is a web app designed to help you research homes and their surrounding areas within the City of Philadelphia. Use the checkboxes above the map to toggle layers like Neighborhood Boundaries, Affordable Housing, Commercial Corridors and Parking. Hover over the map to view neighborhood names.  Click on any map element to view more detail.
     </div>
     <div class="row-2">
-      <h3> Neighborhood Profile </h3>
+      <h3> At a Glance... </h3>
         <p id="info"> </p>
         <p> <form class="form-inline" style="display:none">
           <select id="type" class="form-control">
@@ -44,21 +44,27 @@
     <!-- form is supposed to pass params of "location" to the UJS function -->
 <div class="row-3">
   <div class="results">
+    <% if @string == "2810 Jasper St" %>
+    <h1>Enter a street address to view search results below =></h1>
+    <% else %>
     <h1>Here's what we found...</h1>
+    <% end %>
     <div class="search">
       <div class="input">
         <p>Search for an Address:</p>
         <%# <form data-remote="true" action="/map/index" data-method="post"></form> %>
         <%# <input id="searchField" name="address" type="text" placeholder="1601 Cherry Street"> %>
         <%# <button id="searchButton" type="submit" value="Submit">Submit</button> %>
-          <%= form_tag("/map/index", method: "get") do %>
-            <%= text_field_tag(:address, @string) %>
+          <%= form_tag("/map", method: "get") do %>
+            <%= text_field_tag(:address) %>
             <%= submit_tag("Submit") %>
           <% end %>
       </div>
     </div>
   
-
+  <% if @string == "2810 Jasper St" %>
+  </div>
+  <% else %>
     <div class="property-data">
       <% if @zillow.success? %>
       <h6><%= @zillow.address[:street] %>, <%= @zillow.address[:city] %>, <%= @zillow.address[:state] %> <%= @zillow.address[:zipcode] %></h6>
@@ -114,5 +120,6 @@
       <% end %>
     </div>
   </div>
+  <% end %>
   </div>
 </div>
