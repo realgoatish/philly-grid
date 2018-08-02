@@ -1,3 +1,4 @@
+
         // Pull in neighborhoods API and create layer
 
 
@@ -419,3 +420,30 @@
             }
         })
     });
+
+//     document.addEventListener("DOMContentLoaded", () => {
+//     var submitButton = document.getElementById("submit");
+//     var submission = document.getElementsByName("address");
+//     var main = document.getElementById("main");
+//     var address = submission.value;    
+
+//     main.addEventListener('submit', function(e) {
+//         console.log(e);        
+        
+//     return fetch('http://localhost:3000/map', {
+//     method: 'post',
+//     body: JSON.stringify({address: address}),
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-CSRF-Token': 'Uhe/ArI06jSawH+yQmWBm+5YhSFOz9ie2+KXEv9b52rdJ5k617tkzySsN+3taSPx5KSgu+Ew50NWnrsHROUyUA=='
+//     },
+//     credentials: 'same-origin'
+//   }).then(function(response) {
+//     return response.json();
+//   }).then(function(data) {
+//     console.log(data);
+//   });
+//   e.preventDefault();  
+  
+// });
+// });
