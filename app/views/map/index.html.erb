@@ -1,3 +1,4 @@
+
 <h2 class="browse">Browse Neighborhoods & Available Apartments</h2>
 
   <!-- Checkboxes to toggle map layers on/off -->
@@ -55,9 +56,9 @@
         <%# <form data-remote="true" action="/map/index" data-method="post"></form> %>
         <%# <input id="searchField" name="address" type="text" placeholder="1601 Cherry Street"> %>
         <%# <button id="searchButton" type="submit" value="Submit">Submit</button> %>
-          <%= form_tag("/map", method: "get") do %>
-            <%= text_field_tag(:address) %>
-            <%= submit_tag("Submit") %>
+          <%= form_tag("/map", method: "get", id: "main") do %>
+            <%= text_field_tag(:address, @string) %>
+            <%= submit_tag("Submit", id: "submit") %>
           <% end %>
       </div>
     </div>
