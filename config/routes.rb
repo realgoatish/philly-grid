@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   # scope "map" do
     get 'map' => 'map#index'
-    # post 'map/index' => 'map#results'
+    post 'map' => 'map#index'
   # end
 
   get 'mission' => 'map#show'
